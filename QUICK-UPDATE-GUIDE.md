@@ -68,7 +68,7 @@ cd C:\Users\amdet\source\repos\KANAMORI-SYSTEM-Inc\KdxDesigner
 
 ```powershell
 # 1. インターフェースを変更
-# src/Kdx.Contracts/Interfaces/IAccessRepository.cs を編集
+# src/Kdx.Infrastructure.Supabase/Repositories/ISupabaseRepository.cs を編集
 
 # 2. メジャーバージョンアップ
 .\update-kdxprojects.ps1 -NewVersion "2.0.0"
@@ -186,13 +186,17 @@ dotnet build -c Release
 ### Breaking Changes
 ⚠️ **このバージョンには破壊的変更が含まれています**
 
-- IAccessRepository.GetProcessDetails: 非同期メソッドに変更
-  - 変更前: `List<ProcessDetail> GetProcessDetails(int cycleId)`
-  - 変更後: `Task<List<ProcessDetail>> GetProcessDetailsAsync(int cycleId)`
+- IAccessRepositoryとSupabaseRepositoryAdapterを削除し、ISupabaseRepositoryを直接使用するように変更
+  - 変更前: `services.AddScoped<IAccessRepository, SupabaseRepositoryAdapter>()`
+  - 変更後: `services.AddScoped<ISupabaseRepository, SupabaseRepository>()`
+- すべてのメソッドが非同期に統一
+  - 同期メソッドが必要な場合は`Task.Run().GetAwaiter().GetResult()`を使用
 
 ### Migration Guide
-1. `GetProcessDetails(cycleId)` を `await GetProcessDetailsAsync(cycleId)` に変更
-2. メソッドを含むクラスに `async` キーワードを追加
+1. DI登録を`IAccessRepository`から`ISupabaseRepository`に変更
+2. コンストラクタで`ISupabaseRepository`を受け取るように変更
+3. メソッド呼び出しを非同期メソッド(`*Async`)に変更
+4. メソッドを含むクラスに `async` キーワードを追加
 
 ### Added
 - 新しい非同期APIサポート

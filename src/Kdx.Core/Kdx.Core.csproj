@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kdx.Contracts\Kdx.Contracts.csproj" />
+    <ProjectReference Include="..\Kdx.Infrastructure.Supabase\Kdx.Infrastructure.Supabase.csproj" />
   </ItemGroup>
 
   <ItemGroup>

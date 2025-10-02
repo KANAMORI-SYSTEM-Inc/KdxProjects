@@ -1,5 +1,6 @@
 using Kdx.Contracts.DTOs;
 using Kdx.Contracts.Interfaces;
+using Kdx.Infrastructure.Supabase.Repositories;
 using System.Diagnostics;
 
 namespace Kdx.Infrastructure.Services
@@ -10,21 +11,21 @@ namespace Kdx.Infrastructure.Services
     /// </summary>
     public class MemoryService : IMemoryService
     {
-        private readonly IAccessRepository _repository;
+        private readonly ISupabaseRepository _repository;
 
-        public MemoryService(IAccessRepository repository)
+        public MemoryService(ISupabaseRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public List<Memory> GetMemories(int plcId)
         {
-            return _repository.GetMemories(plcId);
+            return Task.Run(async () => await _repository.GetMemoriesAsync(plcId)).GetAwaiter().GetResult();
         }
 
         public List<MemoryCategory> GetMemoryCategories()
         {
-            return _repository.GetMemoryCategories();
+            return Task.Run(async () => await _repository.GetMemoryCategoriesAsync()).GetAwaiter().GetResult();
         }
 
         private (int PlcId, string Device) GetMemoryKey(Memory memory)
@@ -96,7 +97,7 @@ namespace Kdx.Infrastructure.Services
                     progressCallback?.Invoke($"一括保存中: {memoriesToSave.Count} 件のメモリデータ (PlcId: {plcId})");
                     
                     // バッチ処理で一括保存
-                    _repository.SaveOrUpdateMemoriesBatch(memoriesToSave);
+                    Task.Run(async () => await _repository.SaveOrUpdateMemoriesBatchAsync(memoriesToSave)).GetAwaiter().GetResult();
                     
                     progressCallback?.Invoke($"メモリデータの保存が完了しました (PlcId: {plcId}, 保存件数: {memoriesToSave.Count}, スキップ: {skippedCount} 件)。");
                 }

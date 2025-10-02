@@ -111,7 +111,6 @@ var services = new ServiceCollection();
 
 // Repository層の登録
 services.AddScoped<ISupabaseRepository, SupabaseRepository>();
-services.AddScoped<IAccessRepository, SupabaseRepositoryAdapter>();
 
 // Service層の登録
 services.AddScoped<IProcessFlowService, ProcessFlowService>();
@@ -123,21 +122,21 @@ var serviceProvider = services.BuildServiceProvider();
 ### 2. リポジトリの使用
 
 ```csharp
-using Kdx.Contracts.Interfaces;
+using Kdx.Infrastructure.Supabase.Repositories;
 using Kdx.Contracts.DTOs;
 
 public class MyService
 {
-    private readonly IAccessRepository _repository;
+    private readonly ISupabaseRepository _repository;
 
-    public MyService(IAccessRepository repository)
+    public MyService(ISupabaseRepository repository)
     {
         _repository = repository;
     }
 
-    public void ProcessData()
+    public async Task ProcessDataAsync()
     {
-        var companies = _repository.GetCompanies();
+        var companies = await _repository.GetCompaniesAsync();
         // ビジネスロジックの実装...
     }
 }

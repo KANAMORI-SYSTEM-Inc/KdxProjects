@@ -19,7 +19,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kdx.Core\Kdx.Core.csproj" />
     <ProjectReference Include="..\Kdx.Contracts\Kdx.Contracts.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,7 @@
 using Kdx.Contracts.DTOs;
 using Kdx.Contracts.Interfaces;
 using Kdx.Core.Application;
+using Kdx.Infrastructure.Supabase.Repositories;
 
 namespace Kdx.Infrastructure.Services
 {
@@ -9,17 +10,17 @@ namespace Kdx.Infrastructure.Services
     /// </summary>
     public class ProcessFlowService : IProcessFlowService
     {
-        private readonly IAccessRepository _repository;
+        private readonly ISupabaseRepository _repository;
 
-        public ProcessFlowService(IAccessRepository repository)
+        public ProcessFlowService(ISupabaseRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public List<ProcessDetail> GetProcessDetailsByCycle(int cycleId)
         {
-            var allProcessDetails = _repository.GetProcessDetails();
-            var processes = _repository.GetProcesses();
+            var allProcessDetails = Task.Run(async () => await _repository.GetProcessDetailsAsync()).GetAwaiter().GetResult();
+            var processes = Task.Run(async () => await _repository.GetProcessesAsync()).GetAwaiter().GetResult();
 
             return allProcessDetails
                 .Where(pd => processes.Any(p => p.Id == pd.ProcessId && p.CycleId == cycleId))
@@ -28,22 +29,22 @@ namespace Kdx.Infrastructure.Services
 
         public List<ProcessDetailConnection> GetConnections(int cycleId)
         {
-            return _repository.GetProcessDetailConnections(cycleId);
+            return Task.Run(async () => await _repository.GetProcessDetailConnectionsAsync(cycleId)).GetAwaiter().GetResult();
         }
 
         public List<ProcessDetailFinish> GetFinishConditions(int cycleId)
         {
-            return _repository.GetProcessDetailFinishes(cycleId);
+            return Task.Run(async () => await _repository.GetProcessDetailFinishesAsync(cycleId)).GetAwaiter().GetResult();
         }
 
         public List<ProcessStartCondition> GetStartConditions(int cycleId)
         {
-            return _repository.GetProcessStartConditions(cycleId);
+            return Task.Run(async () => await _repository.GetProcessStartConditionsAsync(cycleId)).GetAwaiter().GetResult();
         }
 
         public List<ProcessFinishCondition> GetProcessFinishConditions(int cycleId)
         {
-            return _repository.GetProcessFinishConditions(cycleId);
+            return Task.Run(async () => await _repository.GetProcessFinishConditionsAsync(cycleId)).GetAwaiter().GetResult();
         }
 
         public void AddConnection(ProcessDetailConnection connection)
@@ -51,7 +52,7 @@ namespace Kdx.Infrastructure.Services
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
 
-            _repository.AddProcessDetailConnection(connection);
+            Task.Run(async () => await _repository.AddProcessDetailConnectionAsync(connection)).GetAwaiter().GetResult();
         }
 
         public void DeleteConnection(int connectionId)
@@ -59,7 +60,7 @@ namespace Kdx.Infrastructure.Services
             if (connectionId <= 0)
                 throw new ArgumentException("無効な接続IDです", nameof(connectionId));
 
-            _repository.DeleteProcessDetailConnection(connectionId);
+            Task.Run(async () => await _repository.DeleteProcessDetailConnectionAsync(connectionId)).GetAwaiter().GetResult();
         }
 
         public void AddFinishCondition(ProcessDetailFinish finish)
@@ -67,7 +68,7 @@ namespace Kdx.Infrastructure.Services
             if (finish == null)
                 throw new ArgumentNullException(nameof(finish));
 
-            _repository.AddProcessDetailFinish(finish);
+            Task.Run(async () => await _repository.AddProcessDetailFinishAsync(finish)).GetAwaiter().GetResult();
         }
 
         public void DeleteFinishCondition(int finishId)
@@ -75,7 +76,7 @@ namespace Kdx.Infrastructure.Services
             if (finishId <= 0)
                 throw new ArgumentException("無効な終了条件IDです", nameof(finishId));
 
-            _repository.DeleteProcessDetailFinish(finishId);
+            Task.Run(async () => await _repository.DeleteProcessDetailFinishAsync(finishId)).GetAwaiter().GetResult();
         }
 
         public bool ValidateConnection(int fromId, int toId)

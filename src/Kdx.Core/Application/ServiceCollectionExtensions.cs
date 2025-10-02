@@ -1,5 +1,6 @@
 using Kdx.Contracts.Interfaces;
 using Kdx.Core.Application.Strategies;
+using Kdx.Infrastructure.Supabase.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kdx.Core.Application
@@ -28,7 +29,7 @@ namespace Kdx.Core.Application
             services.AddScoped<IIOAddressService>(provider =>
             {
                 var errorAggregator = provider.GetRequiredService<IErrorAggregator>();
-                var repository = provider.GetRequiredService<IAccessRepository>();
+                var repository = provider.GetRequiredService<ISupabaseRepository>();
                 var ioSelectorService = provider.GetRequiredService<IIOSelectorService>();
                 return new IOAddressService(errorAggregator, repository, plcId, ioSelectorService);
             });

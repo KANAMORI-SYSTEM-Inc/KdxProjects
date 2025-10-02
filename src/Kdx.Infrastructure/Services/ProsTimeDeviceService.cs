@@ -1,6 +1,7 @@
 using Kdx.Contracts.DTOs;
 using Kdx.Contracts.Enums;
 using Kdx.Contracts.Interfaces;
+using Kdx.Infrastructure.Supabase.Repositories;
 using System.Diagnostics;
 
 namespace Kdx.Infrastructure.Services
@@ -11,7 +12,7 @@ namespace Kdx.Infrastructure.Services
     /// </summary>
     public class ProsTimeDeviceService : IProsTimeDeviceService
     {
-        private readonly IAccessRepository _repository;
+        private readonly ISupabaseRepository _repository;
         private readonly Dictionary<int, OperationProsTimeConfig> _loadedOperationConfigs;
 
         public class OperationProsTimeConfig
@@ -28,7 +29,7 @@ namespace Kdx.Infrastructure.Services
         private static readonly OperationProsTimeConfig _defaultOperationConfig =
             new() { TotalProsTimeCount = 0, SortIdToCategoryIdMap = new Dictionary<int, int>() };
 
-        public ProsTimeDeviceService(IAccessRepository repository)
+        public ProsTimeDeviceService(ISupabaseRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _loadedOperationConfigs = LoadOperationProsTimeConfigsFromDb();
@@ -39,17 +40,17 @@ namespace Kdx.Infrastructure.Services
         /// </summary>
         public void DeleteProsTimeTable()
         {
-            _repository.DeleteProsTimeTable();
+            Task.Run(async () => await _repository.DeleteProsTimeTableAsync()).GetAwaiter().GetResult();
         }
 
         public List<ProsTime> GetProsTimeByPlcId(int plcId)
         {
-            return _repository.GetProsTimeByPlcId(plcId);
+            return Task.Run(async () => await _repository.GetProsTimeByPlcIdAsync(plcId)).GetAwaiter().GetResult();
         }
 
         public List<ProsTime> GetProsTimeByMnemonicId(int plcId, int mnemonicId)
         {
-            return _repository.GetProsTimeByMnemonicId(plcId, mnemonicId);
+            return Task.Run(async () => await _repository.GetProsTimeByMnemonicIdAsync(plcId, mnemonicId)).GetAwaiter().GetResult();
         }
 
         private Dictionary<int, OperationProsTimeConfig> LoadOperationProsTimeConfigsFromDb()
@@ -58,7 +59,7 @@ namespace Kdx.Infrastructure.Services
 
             try
             {
-                var rawConfigData = _repository.GetProsTimeDefinitions();
+                var rawConfigData = Task.Run(async () => await _repository.GetProsTimeDefinitionsAsync()).GetAwaiter().GetResult();
 
                 if (rawConfigData == null || !rawConfigData.Any())
                 {
@@ -132,8 +133,8 @@ namespace Kdx.Infrastructure.Services
                     g => g.ToDictionary(pt => pt.SortId, pt => pt)
                 );
 
-            var definitions = _repository.GetDefinitions("Operation");
-            var cylinders = _repository.GetCYs().Where(c => c.PlcId == plcId).ToList();
+            var definitions = Task.Run(async () => await _repository.GetDefinitionsAsync("Operation")).GetAwaiter().GetResult();
+            var cylinders = Task.Run(async () => await _repository.GetCYsAsync()).GetAwaiter().GetResult().Where(c => c.PlcId == plcId).ToList();
 
             var prosTimesToSave = new List<ProsTime>();
             int count = 0;
@@ -268,10 +269,10 @@ namespace Kdx.Infrastructure.Services
             // 一括で保存
             if (uniqueProsTimes.Any())
             {
-                _repository.SaveOrUpdateProsTimesBatch(uniqueProsTimes);
-                _repository.SaveOrUpdateMemoriesBatch(currentMemories);
-                _repository.SaveOrUpdateMemoriesBatch(previousMemories);
-                _repository.SaveOrUpdateMemoriesBatch(cylinderMemories);
+                Task.Run(async () => await _repository.SaveOrUpdateProsTimesBatchAsync(uniqueProsTimes)).GetAwaiter().GetResult();
+                Task.Run(async () => await _repository.SaveOrUpdateMemoriesBatchAsync(currentMemories)).GetAwaiter().GetResult();
+                Task.Run(async () => await _repository.SaveOrUpdateMemoriesBatchAsync(previousMemories)).GetAwaiter().GetResult();
+                Task.Run(async () => await _repository.SaveOrUpdateMemoriesBatchAsync(cylinderMemories)).GetAwaiter().GetResult();
             }
         }
     }
