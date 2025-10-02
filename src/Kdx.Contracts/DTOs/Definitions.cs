@@ -1,6 +1,6 @@
 namespace Kdx.Contracts.DTOs
 {
-    public class Difinitions
+    public class Definitions
     {
         public int ID { get; set; }
 

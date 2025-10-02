@@ -4,8 +4,8 @@ using Kdx.Contracts.DTOs;
 
 namespace Kdx.Infrastructure.Supabase.Entities
 {
-    [Table("Difinitions")]
-    internal class DifinitionsEntity : BaseModel
+    [Table("Definitions")]
+    internal class DefinitionsEntity : BaseModel
     {
         [PrimaryKey("ID")]
         [Column("ID")]
@@ -38,7 +38,7 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("MemoryCategoryId")]
         public int MemoryCategoryId { get; set; }
 
-        public static DifinitionsEntity FromDto(Difinitions dto) => new()
+        public static DefinitionsEntity FromDto(Definitions dto) => new()
         {
             ID = dto.ID,
             DefName = dto.DefName,
@@ -52,7 +52,7 @@ namespace Kdx.Infrastructure.Supabase.Entities
             MemoryCategoryId = dto.MemoryCategoryId
         };
 
-        public Difinitions ToDto() => new()
+        public Definitions ToDto() => new()
         {
             ID = this.ID,
             DefName = this.DefName,

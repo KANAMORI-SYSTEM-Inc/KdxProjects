@@ -676,9 +676,9 @@ namespace Kdx.Contracts.Interfaces
         /// <summary>
         /// 定義情報を取得
         /// </summary>
-        List<Difinitions> GetDifinitions(string category);
+        List<Definitions> GetDifinitions(string category);
 
-        Difinitions? GetDifinition(string category);
+        Definitions? GetDifinition(string category);
 
 
         #endregion
