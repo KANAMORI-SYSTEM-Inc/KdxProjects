@@ -33,9 +33,12 @@ jobs:
       run: dotnet pack -c Release --no-build --output ./nupkgs
 
     - name: Publish to GitHub Packages
+      shell: pwsh
       run: |
         dotnet nuget add source --username KANAMORI-SYSTEM-Inc --password ${{ secrets.NUGET_PUBLISH_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/KANAMORI-SYSTEM-Inc/index.json"
-        dotnet nuget push "./nupkgs/*.nupkg" --source "github" --api-key ${{ secrets.NUGET_PUBLISH_TOKEN }} --skip-duplicate
+        Get-ChildItem ./nupkgs/*.nupkg | ForEach-Object {
+          dotnet nuget push $_.FullName --source "github" --api-key ${{ secrets.NUGET_PUBLISH_TOKEN }} --skip-duplicate
+        }
       env:
         NUGET_AUTH_TOKEN: ${{ secrets.NUGET_PUBLISH_TOKEN }}
 
