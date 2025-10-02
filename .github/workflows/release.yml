@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build-and-release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
@@ -19,10 +19,12 @@ jobs:
 
     - name: Extract version from tag
       id: get_version
+      shell: pwsh
       run: |
-        VERSION=${GITHUB_REF#refs/tags/v}
-        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-        echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        $version = "${{ github.ref }}" -replace 'refs/tags/v', ''
+        $tagName = "${{ github.ref }}" -replace 'refs/tags/', ''
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+        echo "TAG_NAME=$tagName" >> $env:GITHUB_OUTPUT
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -43,9 +45,10 @@ jobs:
       run: dotnet pack -c Release --no-build --output ./nupkgs
 
     - name: List generated packages
+      shell: pwsh
       run: |
-        echo "📦 Generated packages:"
-        ls -lh ./nupkgs/
+        Write-Host "📦 Generated packages:"
+        Get-ChildItem ./nupkgs/ | Format-Table Name, Length
 
     - name: Publish to GitHub Packages
       run: |
@@ -56,20 +59,22 @@ jobs:
 
     - name: Read CHANGELOG
       id: changelog
+      shell: pwsh
       run: |
-        if [ -f CHANGELOG.md ]; then
-          # Extract version section from CHANGELOG
-          CHANGELOG_CONTENT=$(sed -n "/## \[${{ steps.get_version.outputs.VERSION }}\]/,/## \[/p" CHANGELOG.md | sed '$d')
-          if [ -z "$CHANGELOG_CONTENT" ]; then
-            CHANGELOG_CONTENT="Release ${{ steps.get_version.outputs.VERSION }}"
-          fi
-          # GitHub Actions multiline output
-          echo "CONTENT<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-        else
-          echo "CONTENT=Release ${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_OUTPUT
-        fi
+        if (Test-Path "CHANGELOG.md") {
+          $content = Get-Content "CHANGELOG.md" -Raw
+          $version = "${{ steps.get_version.outputs.VERSION }}"
+          if ($content -match "(?s)## \[$version\](.+?)(?=## \[|\z)") {
+            $changelogContent = $matches[1].Trim()
+          } else {
+            $changelogContent = "Release $version"
+          }
+          "CONTENT<<EOF" >> $env:GITHUB_OUTPUT
+          $changelogContent >> $env:GITHUB_OUTPUT
+          "EOF" >> $env:GITHUB_OUTPUT
+        } else {
+          "CONTENT=Release ${{ steps.get_version.outputs.VERSION }}" >> $env:GITHUB_OUTPUT
+        }
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
