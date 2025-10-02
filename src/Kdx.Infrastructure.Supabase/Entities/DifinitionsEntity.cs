@@ -4,7 +4,7 @@ using Kdx.Contracts.DTOs;
 
 namespace Kdx.Infrastructure.Supabase.Entities
 {
-    [Table("Difinisions")]
+    [Table("Difinitions")]
     internal class DifinitionsEntity : BaseModel
     {
         [PrimaryKey("ID")]
