@@ -1436,21 +1436,21 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         #endregion
 
-        #region Difinitions Methods
+        #region Definitions Methods
 
-        public async Task<List<Difinitions>> GetDifinitionsAsync(string category)
+        public async Task<List<Definitions>> GetDefinitionsAsync(string category)
         {
             var response = await _supabaseClient
-                .From<DifinitionsEntity>()
+                .From<DefinitionsEntity>()
                 .Where(d => d.Category == category)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
 
-        public async Task<Difinitions?> GetDifinitionAsync(string category)
+        public async Task<Definitions?> GetDefinitionAsync(string category)
         {
             var response = await _supabaseClient
-                .From<DifinitionsEntity>()
+                .From<DefinitionsEntity>()
                 .Where(d => d.Category == category)
                 .Single();
             return response?.ToDto();

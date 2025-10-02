@@ -694,14 +694,14 @@ namespace Kdx.Infrastructure.Adapters
 
         #region Difinitions Methods
 
-        public List<Difinitions> GetDifinitions(string category)
+        public List<Definitions> GetDifinitions(string category)
         {
-            return Task.Run(async () => await _supabaseRepository.GetDifinitionsAsync(category)).GetAwaiter().GetResult();
+            return Task.Run(async () => await _supabaseRepository.GetDefinitionsAsync(category)).GetAwaiter().GetResult();
         }
 
-        public Difinitions? GetDifinition(string category)
+        public Definitions? GetDifinition(string category)
         {
-            return Task.Run(async () => await _supabaseRepository.GetDifinitionAsync(category)).GetAwaiter().GetResult();
+            return Task.Run(async () => await _supabaseRepository.GetDefinitionAsync(category)).GetAwaiter().GetResult();
         }
 
         #endregion

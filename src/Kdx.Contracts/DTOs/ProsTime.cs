@@ -9,6 +9,6 @@ namespace Kdx.Contracts.DTOs
         public string CurrentDevice { get; set; } = "ZR0";
         public string PreviousDevice { get; set; } = "ZR0";
         public string CylinderDevice { get; set; } = "ZR0";
-        public int CategoryId { get; set; } // OperationDifinitionsのID
+        public int CategoryId { get; set; } // OperationDefinitionsのID
     }
 }

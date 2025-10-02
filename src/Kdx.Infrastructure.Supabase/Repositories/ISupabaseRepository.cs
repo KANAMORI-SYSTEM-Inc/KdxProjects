@@ -564,10 +564,10 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         
         #endregion
 
-        #region Difinitions Methods
-        
-        Task<List<Difinitions>> GetDifinitionsAsync(string category);
-        Task<Difinitions?> GetDifinitionAsync(string category);
+        #region Definitions Methods
+
+        Task<List<Definitions>> GetDefinitionsAsync(string category);
+        Task<Definitions?> GetDefinitionAsync(string category);
 
 
         #endregion
