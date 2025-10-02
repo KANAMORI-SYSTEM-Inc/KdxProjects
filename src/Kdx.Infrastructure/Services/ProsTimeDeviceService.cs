@@ -132,7 +132,7 @@ namespace Kdx.Infrastructure.Services
                     g => g.ToDictionary(pt => pt.SortId, pt => pt)
                 );
 
-            var difinitions = _repository.GetDifinitions("Operation");
+            var definitions = _repository.GetDefinitions("Operation");
             var cylinders = _repository.GetCYs().Where(c => c.PlcId == plcId).ToList();
 
             var prosTimesToSave = new List<ProsTime>();
@@ -180,11 +180,11 @@ namespace Kdx.Infrastructure.Services
                         CategoryId = currentConfig.SortIdToCategoryIdMap.TryGetValue(i, out var catId) ? catId : 0
                     };
 
-                    var difinition = difinitions.FirstOrDefault(d => d.OutCoilNumber == operation.Id);
+                    var definition = definitions.FirstOrDefault(d => d.OutCoilNumber == operation.Id);
                     var cylinder = cylinders.FirstOrDefault(c => c.Id == operation.CYId);
                     string row2 = cylinder != null ? cylinder.CYNum ?? "NaN" : "NaN";
-                    string row3 = difinition != null ? difinition.Comment1 ?? "" : "";
-                    string row4 = difinition != null ? difinition.Comment2 ?? "" : "";
+                    string row3 = definition != null ? definition.Comment1 ?? "" : "";
+                    string row4 = definition != null ? definition.Comment2 ?? "" : "";
 
                     Memory currentMemory = new()
                     {

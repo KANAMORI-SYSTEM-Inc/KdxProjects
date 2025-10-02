@@ -671,14 +671,14 @@ namespace Kdx.Contracts.Interfaces
         
         #endregion
 
-        #region Difinitions Methods
-        
+        #region Definitions Methods
+
         /// <summary>
         /// 定義情報を取得
         /// </summary>
-        List<Definitions> GetDifinitions(string category);
+        List<Definitions> GetDefinitions(string category);
 
-        Definitions? GetDifinition(string category);
+        Definitions? GetDefinition(string category);
 
 
         #endregion
