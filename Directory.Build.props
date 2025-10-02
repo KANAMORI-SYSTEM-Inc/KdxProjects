@@ -16,6 +16,15 @@
     <RepositoryUrl>https://github.com/KANAMORI-SYSTEM-Inc/KdxProjects</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/KANAMORI-SYSTEM-Inc/KdxProjects</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>plc;automation;wpf;process-flow;interlock;supabase;kdx;industrial-automation;scada;manufacturing</PackageTags>
+    <Description>KDX Projects - PLC automation and process flow management libraries for industrial applications</Description>
+    <PackageReleaseNotes>See CHANGELOG.md for release notes</PackageReleaseNotes>
+
+    <!-- Source Link for debugging -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
 
     <!-- ビルド設定 -->
     <LangVersion>latest</LangVersion>
@@ -28,4 +37,9 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <!-- SourceLink for all projects -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
 </Project>

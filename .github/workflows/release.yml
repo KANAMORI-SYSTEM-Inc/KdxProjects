@@ -53,12 +53,9 @@ jobs:
     - name: Publish to GitHub Packages
       shell: pwsh
       run: |
-        dotnet nuget add source --username KANAMORI-SYSTEM-Inc --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/KANAMORI-SYSTEM-Inc/index.json"
-        Get-ChildItem ./nupkgs/*.nupkg | ForEach-Object {
-          dotnet nuget push $_.FullName --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
-        }
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        Write-Host "⚠️ GitHub Packages publish skipped - requires package:write permission"
+        Write-Host "Packages are available in Release artifacts instead"
+      continue-on-error: true
 
     - name: Read CHANGELOG
       id: changelog
