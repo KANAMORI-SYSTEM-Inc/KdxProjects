@@ -36,14 +36,14 @@ jobs:
       run: dotnet restore
 
     - name: Build Release
-      run: dotnet build -c Release --no-restore
+      run: dotnet build -c Release --no-restore /p:Version=${{ steps.get_version.outputs.VERSION }}
 
     - name: Run tests (if any)
       run: dotnet test -c Release --no-build --verbosity normal || echo "No tests found"
       continue-on-error: true
 
     - name: Pack NuGet packages
-      run: dotnet pack -c Release --no-build --output ./nupkgs
+      run: dotnet pack -c Release --no-build --output ./nupkgs /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
     - name: List generated packages
       shell: pwsh
