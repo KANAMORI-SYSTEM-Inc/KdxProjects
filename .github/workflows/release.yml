@@ -54,8 +54,10 @@ jobs:
     - name: Publish to GitHub Packages
       shell: pwsh
       run: |
-        Write-Host "⚠️ GitHub Packages publish skipped - requires package:write permission"
-        Write-Host "Packages are available in Release artifacts instead"
+        dotnet nuget push ./nupkgs/*.nupkg `
+          --source "https://nuget.pkg.github.com/KANAMORI-SYSTEM-Inc/index.json" `
+          --api-key ${{ secrets.GITHUB_TOKEN }} `
+          --skip-duplicate
       continue-on-error: true
 
     - name: Read CHANGELOG
