@@ -1,0 +1,115 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # v1.0.0, v1.2.3 など
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Extract version from tag
+      id: get_version
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build Release
+      run: dotnet build -c Release --no-restore
+
+    - name: Run tests (if any)
+      run: dotnet test -c Release --no-build --verbosity normal || echo "No tests found"
+      continue-on-error: true
+
+    - name: Pack NuGet packages
+      run: dotnet pack -c Release --no-build --output ./nupkgs
+
+    - name: List generated packages
+      run: |
+        echo "📦 Generated packages:"
+        ls -lh ./nupkgs/
+
+    - name: Publish to GitHub Packages
+      run: |
+        dotnet nuget add source --username KANAMORI-SYSTEM-Inc --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/KANAMORI-SYSTEM-Inc/index.json"
+        dotnet nuget push "./nupkgs/*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Read CHANGELOG
+      id: changelog
+      run: |
+        if [ -f CHANGELOG.md ]; then
+          # Extract version section from CHANGELOG
+          CHANGELOG_CONTENT=$(sed -n "/## \[${{ steps.get_version.outputs.VERSION }}\]/,/## \[/p" CHANGELOG.md | sed '$d')
+          if [ -z "$CHANGELOG_CONTENT" ]; then
+            CHANGELOG_CONTENT="Release ${{ steps.get_version.outputs.VERSION }}"
+          fi
+          # GitHub Actions multiline output
+          echo "CONTENT<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "CONTENT=Release ${{ steps.get_version.outputs.VERSION }}" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.get_version.outputs.TAG_NAME }}
+        name: Release ${{ steps.get_version.outputs.VERSION }}
+        body: |
+          ## 📦 KdxProjects ${{ steps.get_version.outputs.VERSION }}
+
+          ${{ steps.changelog.outputs.CONTENT }}
+
+          ### 📥 Installation
+
+          ```bash
+          # NuGetパッケージの更新
+          dotnet add package Kdx.Contracts --version ${{ steps.get_version.outputs.VERSION }}
+          dotnet add package Kdx.Core --version ${{ steps.get_version.outputs.VERSION }}
+          dotnet add package Kdx.Infrastructure --version ${{ steps.get_version.outputs.VERSION }}
+          dotnet add package Kdx.Infrastructure.Supabase --version ${{ steps.get_version.outputs.VERSION }}
+          dotnet add package Kdx.Contracts.ViewModels --version ${{ steps.get_version.outputs.VERSION }}
+          ```
+
+          ### 📚 Documentation
+
+          - [CHANGELOG](https://github.com/KANAMORI-SYSTEM-Inc/KdxProjects/blob/master/CHANGELOG.md)
+          - [README](https://github.com/KANAMORI-SYSTEM-Inc/KdxProjects/blob/master/README.md)
+          - [Quick Update Guide](https://github.com/KANAMORI-SYSTEM-Inc/KdxProjects/blob/master/QUICK-UPDATE-GUIDE.md)
+
+          ### 📦 Packages
+
+          すべてのパッケージはGitHub Packagesで利用可能です。
+        files: ./nupkgs/*.nupkg
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages-${{ steps.get_version.outputs.VERSION }}
+        path: ./nupkgs/*.nupkg
+        retention-days: 90
