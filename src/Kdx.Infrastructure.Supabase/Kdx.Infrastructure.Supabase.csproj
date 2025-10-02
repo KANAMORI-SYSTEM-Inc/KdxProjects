@@ -8,13 +8,7 @@
     <!-- NuGet Package metadata -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Kdx.Infrastructure.Supabase</PackageId>
-    <Version>1.0.0</Version>
-    <Authors>KANAMORI SYSTEM Inc.</Authors>
-    <Company>KANAMORI SYSTEM Inc.</Company>
-    <Product>KDX Projects</Product>
     <Description>Supabase-specific infrastructure implementation for KDX Projects</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/HayatoShimada/KdxDesigner</RepositoryUrl>
     <PackageTags>kdx;infrastructure;supabase;repository</PackageTags>
   </PropertyGroup>
 
