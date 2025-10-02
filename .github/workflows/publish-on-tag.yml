@@ -1,0 +1,45 @@
+name: Publish on Tag
+
+on:
+  push:
+    tags:
+      - 'v*'  # v1.0.0, v1.0.1 など
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Extract version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build Release
+      run: dotnet build -c Release --no-restore
+
+    - name: Pack NuGet packages
+      run: dotnet pack -c Release --no-build --output ./nupkgs
+
+    - name: Publish to GitHub Packages
+      run: |
+        dotnet nuget add source --username KANAMORI-SYSTEM-Inc --password ${{ secrets.NUGET_PUBLISH_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/KANAMORI-SYSTEM-Inc/index.json"
+        dotnet nuget push "./nupkgs/*.nupkg" --source "github" --api-key ${{ secrets.NUGET_PUBLISH_TOKEN }} --skip-duplicate
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./nupkgs/*.nupkg
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

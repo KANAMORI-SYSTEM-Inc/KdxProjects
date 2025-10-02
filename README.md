@@ -86,6 +86,20 @@ KdxProjects/
 - **MINOR**: 後方互換性のある機能追加
 - **PATCH**: 後方互換性のあるバグフィックス
 
+### パッケージ更新
+
+KdxProjectsを更新してKdxDesignerに反映させる方法:
+
+**🚀 クイックスタート:**
+```powershell
+# バージョン1.0.1に更新する場合
+.\update-kdxprojects.ps1 -NewVersion "1.0.1"
+```
+
+**📚 詳細ガイド:**
+- [QUICK-UPDATE-GUIDE.md](QUICK-UPDATE-GUIDE.md) - 更新手順のクイックリファレンス
+- [完全ワークフローガイド](../kdx_projects/docs/kdxprojects-update-workflow.md) - 詳細な更新手順とシナリオ別ガイド
+
 ## ライセンス
 
 MIT License
