@@ -131,7 +131,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<CylinderControlBoxEntity>()
-                .Where(c => c.PlcId == plcId && c.CylinderId == cylinderId)
+                .Where(c => c.PlcId == plcId)
+                .Where(c => c.CylinderId == cylinderId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -225,7 +226,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<MachineEntity>()
-                .Where(m => m.MachineNameId == nameId && m.DriveSubId == driveSubId)
+                .Where(m => m.MachineNameId == nameId)
+                .Where(m => m.DriveSubId == driveSubId)
                 .Single();
             return response?.ToDto();
         }
@@ -311,7 +313,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<MnemonicTimerDeviceEntity>()
-                .Where(t => t.MnemonicId == mnemonicId && t.RecordId == recordId)
+                .Where(t => t.MnemonicId == mnemonicId)
+                .Where(t => t.RecordId == recordId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -382,7 +385,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             // TimerRecordId髢｢騾｣繝・・繝悶Ν縺悟ｿ・ｦ√↑蝣ｴ蜷医∝ｮ溯｣・ｒ霑ｽ蜉
             await _supabaseClient
                 .From<TimerRecordIdEntity>()
-                .Where(t => t.TimerId == timerId && t.RecordId == recordId)
+                .Where(t => t.TimerId == timerId)
+                .Where(t => t.RecordId == recordId)
                 .Delete();
         }
 
@@ -543,7 +547,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<MnemonicTimerDeviceEntity>()
-                .Where(m => m.PlcId == plcId && m.CycleId == cycleId)
+                .Where(m => m.PlcId == plcId)
+                .Where(m => m.CycleId == cycleId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -552,7 +557,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<MnemonicTimerDeviceEntity>()
-                .Where(m => m.PlcId == plcId && m.CycleId == cycleId && m.MnemonicId == mnemonicId)
+                .Where(m => m.PlcId == plcId)
+                .Where(m => m.CycleId == cycleId)
+                .Where(m => m.MnemonicId == mnemonicId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -563,7 +570,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             {
                 var response = await _supabaseClient
                     .From<MnemonicTimerDeviceEntity>()
-                    .Where(m => m.PlcId == plcId && m.MnemonicId == mnemonicId)
+                    .Where(m => m.PlcId == plcId)
+                    .Where(m => m.MnemonicId == mnemonicId)
                     .Get();
                 return response?.Models?.Select(e => e.ToDto()).ToList() ?? new List<MnemonicTimerDevice>();
             }
@@ -578,7 +586,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<MnemonicTimerDeviceEntity>()
-                .Where(m => m.PlcId == plcId && m.TimerId == timerId)
+                .Where(m => m.PlcId == plcId)
+                .Where(m => m.TimerId == timerId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -588,9 +597,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             var entity = MnemonicTimerDeviceEntity.FromDto(device);
             await _supabaseClient
                 .From<MnemonicTimerDeviceEntity>()
-                .Where(m => m.MnemonicId == device.MnemonicId &&
-                           m.RecordId == device.RecordId &&
-                           m.TimerId == device.TimerId)
+                .Where(m => m.MnemonicId == device.MnemonicId)
+                .Where(m => m.RecordId == device.RecordId)
+                .Where(m => m.TimerId == device.TimerId)
                 .Update(entity);
         }
 
@@ -607,9 +616,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<MnemonicTimerDeviceEntity>()
-                .Where(m => m.MnemonicId == mnemonicId &&
-                           m.RecordId == recordId &&
-                           m.TimerId == timerId)
+                .Where(m => m.MnemonicId == mnemonicId)
+                .Where(m => m.RecordId == recordId)
+                .Where(m => m.TimerId == timerId)
                 .Delete();
         }
 
@@ -693,7 +702,10 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
             if (plcId.HasValue && cylinderId.HasValue)
             {
-                var response = await query.Where(s => s.PlcId == plcId.Value && s.CylinderId == cylinderId.Value).Get();
+                var response = await query
+                    .Where(s => s.PlcId == plcId.Value)
+                    .Where(s => s.CylinderId == cylinderId.Value)
+                    .Get();
                 return response.Models.Select(e => e.ToDto()).ToList();
             }
             else if (plcId.HasValue)
@@ -721,7 +733,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 var entity = IOEntity.FromDto(io);
                 await _supabaseClient
                     .From<IOEntity>()
-                    .Where(i => i.Address == io.Address && i.PlcId == io.PlcId)
+                    .Where(i => i.Address == io.Address)
+                    .Where(i => i.PlcId == io.PlcId)
                     .Update(entity);
             }
         }
@@ -735,7 +748,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 var entity = IOEntity.FromDto(io);
                 await _supabaseClient
                     .From<IOEntity>()
-                    .Where(i => i.Address == io.Address && i.PlcId == io.PlcId)
+                    .Where(i => i.Address == io.Address)
+                    .Where(i => i.PlcId == io.PlcId)
                     .Update(entity);
             }
 
@@ -834,7 +848,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<ProcessDetailConnectionEntity>()
-                .Where(p => p.FromProcessDetailId == fromId && p.ToProcessDetailId == toId)
+                .Where(p => p.FromProcessDetailId == fromId)
+                .Where(p => p.ToProcessDetailId == toId)
                 .Delete();
         }
 
@@ -912,8 +927,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<ProcessDetailFinishEntity>()
-                .Where(p => p.ProcessDetailId == processDetailId &&
-                           p.FinishProcessDetailId == finishProcessDetailId)
+                .Where(p => p.ProcessDetailId == processDetailId)
+                .Where(p => p.FinishProcessDetailId == finishProcessDetailId)
                 .Delete();
         }
 
@@ -1054,7 +1069,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<CylinderIOEntity>()
-                .Where(c => c.CylinderId == cylinderId && c.PlcId == plcId)
+                .Where(c => c.CylinderId == cylinderId)
+                .Where(c => c.PlcId == plcId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -1063,7 +1079,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<CylinderIOEntity>()
-                .Where(c => c.IOAddress == ioAddress && c.PlcId == plcId)
+                .Where(c => c.IOAddress == ioAddress)
+                .Where(c => c.PlcId == plcId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -1087,7 +1104,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<CylinderIOEntity>()
-                .Where(c => c.CylinderId == cylinderId && c.IOAddress == ioAddress && c.PlcId == plcId)
+                .Where(c => c.CylinderId == cylinderId)
+                .Where(c => c.IOAddress == ioAddress)
+                .Where(c => c.PlcId == plcId)
                 .Delete();
         }
 
@@ -1117,7 +1136,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<OperationIOEntity>()
-                .Where(o => o.IOAddress == ioAddress && o.PlcId == plcId)
+                .Where(o => o.IOAddress == ioAddress)
+                .Where(o => o.PlcId == plcId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -1139,7 +1159,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<OperationIOEntity>()
-                .Where(o => o.OperationId == operationId && o.IOAddress == ioAddress && o.PlcId == plcId)
+                .Where(o => o.OperationId == operationId)
+                .Where(o => o.IOAddress == ioAddress)
+                .Where(o => o.PlcId == plcId)
                 .Delete();
         }
 
@@ -1222,7 +1244,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             {
                 await _supabaseClient
                     .From<ProcessErrorEntity>()
-                    .Where(e => e.PlcId == error.PlcId && e.AlarmId == error.AlarmId)
+                    .Where(e => e.PlcId == error.PlcId)
+                    .Where(e => e.AlarmId == error.AlarmId)
                     .Update(ProcessErrorEntity.FromDto(error));
             }
         }
@@ -1245,7 +1268,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<MnemonicDeviceEntity>()
-                .Where(m => m.PlcId == plcId && m.MnemonicId == mnemonicId)
+                .Where(m => m.PlcId == plcId)
+                .Where(m => m.MnemonicId == mnemonicId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -1254,7 +1278,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<MnemonicDeviceEntity>()
-                .Where(m => m.PlcId == plcId && m.MnemonicId == mnemonicId)
+                .Where(m => m.PlcId == plcId)
+                .Where(m => m.MnemonicId == mnemonicId)
                 .Delete();
         }
 
@@ -1327,7 +1352,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
                 var response = await _supabaseClient
                     .From<ProsTimeEntity>()
-                    .Where(p => p.PlcId == plcId && p.MnemonicId == mnemonicId)
+                    .Where(p => p.PlcId == plcId)
+                    .Where(p => p.MnemonicId == mnemonicId)
                     .Get();
 
                 var prosTimes = response?.Models?.Select(e => e.ToDto()).ToList() ?? new List<ProsTime>();
@@ -1614,7 +1640,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             var response = await _supabaseClient
                 .From<InterlockIOEntity>()
-                .Where(i => i.IOAddress == ioAddress && i.PlcId == plcId)
+                .Where(i => i.IOAddress == ioAddress)
+                .Where(i => i.PlcId == plcId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
