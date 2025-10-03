@@ -2,76 +2,82 @@
 
 ## 概要
 
-KDX Projectsは、以下のNuGetパッケージとして提供されています：
+KDX Projectsは、NuGet.orgで公開されている以下のパッケージとして提供されています：
 
 1. **Kdx.Contracts** - DTOとインターフェース
-2. **Kdx.Core** - ビジネスロジックとアプリケーションサービス
-3. **Kdx.Infrastructure** - インフラストラクチャサービスの実装
-4. **Kdx.Infrastructure.Supabase** - Supabase固有のリポジトリ実装
-5. **Kdx.Contracts.ViewModels** - WPF ViewModelsの契約
+2. **Kdx.Infrastructure.Supabase** - Supabase固有のリポジトリ実装
 
-## ローカルNuGetフィードのセットアップ
+## インストール
 
-### 1. ローカルフィードディレクトリの作成
+### NuGet.orgからのインストール
 
 ```bash
-mkdir C:\NuGetLocal
+# 最新版をインストール
+dotnet add package Kdx.Contracts
+dotnet add package Kdx.Infrastructure.Supabase
+
+# 特定バージョンをインストール
+dotnet add package Kdx.Contracts --version 2.0.0-alpha
+dotnet add package Kdx.Infrastructure.Supabase --version 2.0.0-alpha
 ```
 
-### 2. パッケージのコピー
+### Visual Studioから
+
+1. ソリューションエクスプローラーでプロジェクトを右クリック
+2. 「NuGetパッケージの管理」を選択
+3. 「参照」タブで「Kdx.Contracts」を検索
+4. インストールをクリック
+
+### パッケージマネージャーコンソールから
+
+```powershell
+Install-Package Kdx.Contracts -Version 2.0.0-alpha
+Install-Package Kdx.Infrastructure.Supabase -Version 2.0.0-alpha
+```
+
+## クイックスタート - Webアプリテンプレート（推奨）
+
+最も簡単な方法は、用意されているWebアプリテンプレートを使用することです：
 
 ```bash
-# Releaseビルドからパッケージをローカルフィードにコピー
-copy bin\Kdx.Contracts\Release\*.nupkg C:\NuGetLocal\
-copy bin\Kdx.Core\Release\*.nupkg C:\NuGetLocal\
-copy bin\Kdx.Infrastructure\Release\*.nupkg C:\NuGetLocal\
-copy bin\Kdx.Infrastructure.Supabase\Release\*.nupkg C:\NuGetLocal\
-copy bin\Kdx.Contracts.ViewModels\Release\*.nupkg C:\NuGetLocal\
+# リポジトリをクローン
+git clone https://github.com/kanamori-system-inc/kdxprojects.git
+cd kdxprojects/src/Kdx.Web.Template
+
+# Supabase設定を更新
+# appsettings.json を編集してSupabase認証情報を設定
+
+# 実行
+dotnet run
 ```
 
-### 3. NuGetソースの追加
-
-```bash
-dotnet nuget add source C:\NuGetLocal -n KdxLocal
-```
-
-または、Visual StudioのNuGetパッケージマネージャーから：
-- ツール > NuGet パッケージ マネージャー > パッケージ マネージャー設定
-- パッケージ ソース > 追加
-- 名前: KdxLocal
-- ソース: C:\NuGetLocal
+詳細は **[Webテンプレートガイド](web-template-guide.md)** を参照してください。
 
 ## 新しいプロジェクトでの使用方法
 
-### 基本的な使用例
+### ASP.NET Core Webアプリケーション
 
 ```bash
-# 新しいWPFプロジェクトの作成
-dotnet new wpf -n MyKdxClient
+# 新しいWebアプリの作成
+dotnet new webapp -n MyKdxApp
+cd MyKdxApp
 
 # NuGetパッケージの追加
-cd MyKdxClient
-dotnet add package Kdx.Contracts --version 1.0.0 --source KdxLocal
-dotnet add package Kdx.Core --version 1.0.0 --source KdxLocal
-dotnet add package Kdx.Infrastructure --version 1.0.0 --source KdxLocal
-dotnet add package Kdx.Infrastructure.Supabase --version 1.0.0 --source KdxLocal
+dotnet add package Kdx.Contracts --version 2.0.0-alpha
+dotnet add package Kdx.Infrastructure.Supabase --version 2.0.0-alpha
 ```
 
 ### プロジェクトファイルの例
 
 ```xml
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kdx.Contracts" Version="1.0.0" />
-    <PackageReference Include="Kdx.Core" Version="1.0.0" />
-    <PackageReference Include="Kdx.Infrastructure" Version="1.0.0" />
-    <PackageReference Include="Kdx.Infrastructure.Supabase" Version="1.0.0" />
-    <PackageReference Include="Kdx.Contracts.ViewModels" Version="1.0.0" />
+    <PackageReference Include="Kdx.Contracts" Version="2.0.0-alpha" />
+    <PackageReference Include="Kdx.Infrastructure.Supabase" Version="2.0.0-alpha" />
   </ItemGroup>
 </Project>
 ```
@@ -79,21 +85,15 @@ dotnet add package Kdx.Infrastructure.Supabase --version 1.0.0 --source KdxLocal
 ## パッケージの依存関係
 
 ```
-Kdx.Infrastructure.Supabase
-  └─ Kdx.Core
-      └─ Kdx.Contracts
+Kdx.Infrastructure.Supabase (v2.0.0-alpha)
   └─ supabase-csharp (0.16.2)
   └─ postgrest-csharp (3.5.1)
 
-Kdx.Infrastructure
-  └─ Kdx.Core
-      └─ Kdx.Contracts
-  └─ Kdx.Infrastructure.Supabase
-
-Kdx.Contracts.ViewModels
-  └─ Kdx.Contracts
-  └─ CommunityToolkit.Mvvm (8.4.0)
+Kdx.Contracts (v2.0.0-alpha)
+  └─ （外部依存なし）
 ```
+
+**注意**: パッケージは自動的に依存関係を解決します。`Kdx.Infrastructure.Supabase`をインストールすると、`Kdx.Contracts`も自動的にインストールされます。
 
 ## 使用例
 
@@ -170,78 +170,116 @@ public class MyViewModel
 }
 ```
 
-## パッケージのアップデート
+## パッケージの更新
 
-### バージョン番号の更新
-
-各プロジェクトの `.csproj` ファイルの `<Version>` タグを更新します：
-
-```xml
-<Version>1.0.1</Version>
-```
-
-### パッケージの再ビルド
+### プロジェクトでのパッケージ更新
 
 ```bash
-dotnet build -c Release
+# 最新版に更新
+dotnet add package Kdx.Contracts
+dotnet add package Kdx.Infrastructure.Supabase
+
+# 特定バージョンに更新
+dotnet add package Kdx.Contracts --version 2.0.1
+dotnet add package Kdx.Infrastructure.Supabase --version 2.0.1
 ```
 
-### ローカルフィードへのコピー
+### Visual Studioから更新
 
-```bash
-copy bin\Kdx.Contracts\Release\*.nupkg C:\NuGetLocal\
-# ... 他のパッケージも同様
-```
+1. ソリューションエクスプローラーでプロジェクトを右クリック
+2. 「NuGetパッケージの管理」を選択
+3. 「更新」タブで更新可能なパッケージを確認
+4. 「更新」をクリック
 
 ## トラブルシューティング
 
-### パッケージが見つからない場合
+### パッケージが見つからない（NuGet.org）
 
-1. ローカルフィードのパスを確認
 ```bash
-dotnet nuget list source
-```
+# 1. NuGet.orgで公開されているか確認
+# https://www.nuget.org/packages/Kdx.Contracts/
 
-2. キャッシュをクリア
-```bash
+# 2. キャッシュをクリア
 dotnet nuget locals all --clear
-```
 
-3. パッケージを再インストール
-```bash
+# 3. パッケージを再インストール
 dotnet restore
+
+# 4. 明示的にバージョン指定
+dotnet add package Kdx.Contracts --version 2.0.0-alpha
 ```
 
 ### 依存関係の競合
 
-パッケージ間のバージョンが一致していることを確認してください。すべてのKdxパッケージは同じバージョン（1.0.0など）を使用することを推奨します。
-
-## プライベートNuGet Serverへの公開（オプション）
-
-### Azure Artifactsの使用
-
 ```bash
-dotnet nuget push Kdx.Contracts.1.0.0.nupkg --source "AzureArtifacts" --api-key <your-api-key>
+# パッケージの依存関係を確認
+dotnet list package --include-transitive
+
+# 特定バージョンを明示的に指定
+dotnet add package Kdx.Contracts --version 2.0.1
+dotnet add package Kdx.Infrastructure.Supabase --version 2.0.1
 ```
 
-### GitHub Packagesの使用
+**推奨**: すべてのKdxパッケージは同じバージョンを使用してください。
+
+### ビルドエラー（破壊的変更後）
 
 ```bash
-dotnet nuget push Kdx.Contracts.1.0.0.nupkg --source "github" --api-key <your-github-token>
+# 1. CHANGELOG.mdで破壊的変更を確認
+curl https://raw.githubusercontent.com/kanamori-system-inc/kdxprojects/master/CHANGELOG.md
+
+# 2. Migration Guideを確認
+# リポジトリのMIGRATION-GUIDE-*.mdを参照
+
+# 3. コードを修正してから再ビルド
+dotnet build
+```
+
+## CI/CD統合
+
+### GitHub Actionsでの使用
+
+```yaml
+# .github/workflows/build.yml
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build
 ```
 
 ## まとめ
 
 KDX ProjectsのNuGetパッケージ化により、以下のメリットが得られます：
 
-- ✅ KdxDesignerと他のプロジェクトの完全な分離
+- ✅ NuGet.orgからの簡単なインストール
 - ✅ バージョン管理が容易
 - ✅ 他のプロジェクトからの再利用が可能
-- ✅ 依存関係の明確化
-- ✅ 配布が簡単
+- ✅ 依存関係の自動解決
+- ✅ GitHub Actionsによる自動公開
+- ✅ Webアプリテンプレートで即座に開始可能
 
 ## 参考資料
 
+- **[Webテンプレートガイド](web-template-guide.md)** - Kdx.Web.Templateの使い方
+- **[貢献ガイド](contribution-guide.md)** - パッケージ開発への貢献方法
+- **[QUICK-UPDATE-GUIDE.md](../QUICK-UPDATE-GUIDE.md)** - パッケージ更新手順
 - [NuGet Documentation](https://docs.microsoft.com/en-us/nuget/)
-- [Creating NuGet Packages](https://docs.microsoft.com/en-us/nuget/create-packages/overview-and-workflow)
-- [Local NuGet Feeds](https://docs.microsoft.com/en-us/nuget/hosting-packages/local-feeds)
+- [ASP.NET Core Dependency Injection](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection)

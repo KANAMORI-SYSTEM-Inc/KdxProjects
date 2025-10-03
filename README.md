@@ -42,16 +42,25 @@ dotnet build -c Release
 
 ## NuGetパッケージの使用
 
-詳細は [docs/nuget-packages-guide.md](docs/nuget-packages-guide.md) を参照してください。
-
-### 基本的な使用例
+### インストール
 
 ```bash
-dotnet add package Kdx.Contracts --version 1.0.0
-dotnet add package Kdx.Core --version 1.0.0
-dotnet add package Kdx.Infrastructure --version 1.0.0
-dotnet add package Kdx.Infrastructure.Supabase --version 1.0.0
+# NuGet.orgから最新版をインストール
+dotnet add package Kdx.Contracts --version 2.0.0-alpha
+dotnet add package Kdx.Infrastructure.Supabase --version 2.0.0-alpha
 ```
+
+### Webアプリテンプレート（推奨）
+
+```bash
+# Kdx.Web.Templateを使用
+cd src/Kdx.Web.Template
+dotnet run
+```
+
+詳細は以下を参照:
+- **[docs/web-template-guide.md](docs/web-template-guide.md)** - Webテンプレート使用ガイド
+- **[docs/nuget-packages-guide.md](docs/nuget-packages-guide.md)** - パッケージ詳細ガイド
 
 ## 開発
 
@@ -83,17 +92,26 @@ KdxProjects/
 
 ### パッケージ更新
 
-KdxProjectsを更新してKdxDesignerに反映させる方法:
+KdxProjectsパッケージの更新と公開方法:
 
 **🚀 クイックスタート:**
-```powershell
-# バージョン1.0.1に更新する場合
-.\update-kdxprojects.ps1 -NewVersion "1.0.1"
+```bash
+# 1. Issue作成 → ブランチ作成 → 開発
+# 2. Pull Request → コードレビュー → マージ
+# 3. リリースタグ作成
+git tag -a v2.0.1 -m "Release v2.0.1"
+git push origin v2.0.1
+
+# GitHub Actionsが自動的に:
+# - NuGetパッケージをビルド
+# - NuGet.orgに公開
+# - GitHub Releaseを作成
 ```
 
 **📚 詳細ガイド:**
-- [QUICK-UPDATE-GUIDE.md](QUICK-UPDATE-GUIDE.md) - 更新手順のクイックリファレンス
-- [完全ワークフローガイド](../kdx_projects/docs/kdxprojects-update-workflow.md) - 詳細な更新手順とシナリオ別ガイド
+- **[QUICK-UPDATE-GUIDE.md](QUICK-UPDATE-GUIDE.md)** - 更新手順のクイックリファレンス
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - 貢献ガイド（英語）
+- **[docs/contribution-guide.md](docs/contribution-guide.md)** - 詳細な開発フロー
 
 ## ライセンス
 
@@ -107,6 +125,17 @@ MIT License
 ## 貢献
 
 プルリクエストは歓迎します。大きな変更の場合は、まずissueを開いて変更内容について議論してください。
+
+### 貢献ガイド
+
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - 貢献の手順（クイックリファレンス）
+- **[貢献ガイド詳細](docs/contribution-guide.md)** - 詳細な開発フロー、Issue運用、PR手順
+
+### 主要ドキュメント
+
+- **[クラスライブラリ化のメリット](docs/class-library-benefits.md)** - アーキテクチャ設計の背景
+- **[Webテンプレートガイド](docs/web-template-guide.md)** - Fork用Webアプリの使い方
+- **[NuGetパッケージガイド](docs/nuget-packages-guide.md)** - パッケージ使用方法
 
 ---
 
