@@ -1629,7 +1629,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<InterlockIOEntity>()
-                .Where(i => i.PlcId == interlockIO.PlcId && i.IOAddress == interlockIO.IOAddress && i.InterlockConditionId == interlockIO.InterlockConditionId)
+                .Where(i => i.PlcId == interlockIO.PlcId)
+                .Where(i => i.IOAddress == interlockIO.IOAddress)
+                .Where(i => i.InterlockConditionId == interlockIO.InterlockConditionId)
                 .Delete();
         }
 
