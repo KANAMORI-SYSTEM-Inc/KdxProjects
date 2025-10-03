@@ -5,7 +5,9 @@
       "Bash(git commit:*)",
       "Bash(git checkout:*)",
       "Bash(dotnet build:*)",
-      "Bash(dotnet pack:*)"
+      "Bash(dotnet pack:*)",
+      "Bash(git tag:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
