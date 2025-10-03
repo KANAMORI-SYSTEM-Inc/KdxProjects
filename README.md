@@ -10,7 +10,6 @@ NuGetパッケージ群として提供されるKDXシステムのコアライブ
 | **Kdx.Core** | 1.0.0 | ビジネスロジックとアプリケーションサービス |
 | **Kdx.Infrastructure** | 1.0.0 | インフラストラクチャサービスの実装 |
 | **Kdx.Infrastructure.Supabase** | 1.0.0 | Supabase固有のリポジトリ実装 |
-| **Kdx.Contracts.ViewModels** | 1.0.0 | WPF ViewModelsの契約 |
 
 ## アーキテクチャ
 
@@ -26,9 +25,6 @@ Kdx.Infrastructure
       └─ Kdx.Contracts
   └─ Kdx.Infrastructure.Supabase
 
-Kdx.Contracts.ViewModels
-  └─ Kdx.Contracts
-  └─ CommunityToolkit.Mvvm (8.4.0)
 ```
 
 ## ビルド
@@ -73,7 +69,6 @@ KdxProjects/
 │   ├── Kdx.Core/                # ビジネスロジック
 │   ├── Kdx.Infrastructure/      # インフラストラクチャ実装
 │   ├── Kdx.Infrastructure.Supabase/  # Supabase実装
-│   └── Kdx.Contracts.ViewModels/     # ViewModel契約
 ├── tests/                       # テストプロジェクト（将来追加）
 └── docs/                        # ドキュメント
 ```
