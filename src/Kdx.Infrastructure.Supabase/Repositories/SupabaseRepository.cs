@@ -10,7 +10,7 @@ namespace Kdx.Infrastructure.Supabase.Repositories
     /// <summary>
     /// Supabase繝・・繧ｿ繝吶・繧ｹ縺ｸ縺ｮ繧｢繧ｯ繧ｻ繧ｹ讖溯・繧呈署萓帙☆繧九Μ繝昴ず繝医Μ縺ｮ螳溯｣・
     /// </summary>
-    public class SupabaseRepository : ISupabaseRepository
+    public partial class SupabaseRepository : ISupabaseRepository
     {
         private readonly Client _supabaseClient;
 
@@ -25,7 +25,6 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             {
                 System.Diagnostics.Debug.WriteLine("Calling Supabase API for Companies...");
 
-                // 繝・・繝悶Ν縺ｮ蟄伜惠縺ｨRLS險ｭ螳壹ｒ遒ｺ隱・
                 var response = await _supabaseClient
                     .From<CompanyEntity>()
                     .Select("*")
@@ -35,7 +34,6 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
                 var companies = response?.Models?.Select(e => e.ToDto()).ToList() ?? new List<Company>();
 
-                // 繝・・繧ｿ縺・莉ｶ縺ｮ蝣ｴ蜷医√ユ繧ｹ繝医ョ繝ｼ繧ｿ繧呈諺蜈･縺励※縺ｿ繧・
                 if (companies.Count == 0)
                 {
                     System.Diagnostics.Debug.WriteLine("No companies found. Attempting to insert test data...");
@@ -319,12 +317,13 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             return response.Models.Select(e => e.ToDto()).ToList();
         }
 
-        public async Task AddTimerAsync(Timer timer)
+        public async Task<int> AddTimerAsync(Timer timer)
         {
             var entity = TimerEntity.FromDto(timer);
-            await _supabaseClient
+            var response = await _supabaseClient
                 .From<TimerEntity>()
                 .Insert(entity);
+            return response.Models.FirstOrDefault()?.ToDto().ID ?? 0;
         }
 
         public async Task UpdateTimerAsync(Timer timer)
