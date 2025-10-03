@@ -2,7 +2,6 @@
 using Kdx.Infrastructure.Supabase.Entities;
 using Supabase;
 using System.Diagnostics;
-using System.Linq;
 using Timer = Kdx.Contracts.DTOs.Timer;
 
 namespace Kdx.Infrastructure.Supabase.Repositories
@@ -1602,7 +1601,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         }
 
         // InterlockIO
-        public async Task<List<InterlockIO>> GetInterlockIOsByInterlockIdAsync(int interlockConditionId) { 
+        public async Task<List<InterlockIO>> GetInterlockIOsByInterlockIdAsync(int interlockConditionId)
+        {
             var response = await _supabaseClient
                 .From<InterlockIOEntity>()
                 .Where(i => i.InterlockConditionId == interlockConditionId)

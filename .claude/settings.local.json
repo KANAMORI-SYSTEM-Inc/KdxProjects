@@ -7,7 +7,10 @@
       "Bash(dotnet build:*)",
       "Bash(dotnet pack:*)",
       "Bash(git tag:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(dotnet --version)",
+      "Bash(dotnet new:*)",
+      "Bash(dotnet add:*)"
     ],
     "deny": [],
     "ask": []
