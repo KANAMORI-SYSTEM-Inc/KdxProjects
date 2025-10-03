@@ -38,6 +38,9 @@ dotnet build
 
 # リリースビルド（NuGetパッケージ生成）
 dotnet build -c Release
+
+# テスト実行
+dotnet test
 ```
 
 ## NuGetパッケージの使用
@@ -78,9 +81,24 @@ KdxProjects/
 │   ├── Kdx.Core/                # ビジネスロジック
 │   ├── Kdx.Infrastructure/      # インフラストラクチャ実装
 │   ├── Kdx.Infrastructure.Supabase/  # Supabase実装
-├── tests/                       # テストプロジェクト（将来追加）
+├── tests/                       # テストプロジェクト
+│   └── Kdx.Infrastructure.Supabase.Tests/  # 統合テスト
 └── docs/                        # ドキュメント
 ```
+
+### テスト
+
+統合テストが用意されており、Supabaseクエリの正常動作を確認できます。
+
+```bash
+# すべてのテストを実行
+dotnet test
+
+# 詳細出力で実行
+dotnet test --logger "console;verbosity=detailed"
+```
+
+テストの詳細は **[tests/Kdx.Infrastructure.Supabase.Tests/README.md](tests/Kdx.Infrastructure.Supabase.Tests/README.md)** を参照してください。
 
 ### バージョニング
 
