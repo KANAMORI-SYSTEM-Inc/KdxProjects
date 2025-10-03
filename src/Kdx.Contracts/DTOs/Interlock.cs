@@ -15,5 +15,7 @@ namespace Kdx.Contracts.DTOs
         public int? PreConditionID1 { get; set; }
 
         public int? PreConditionID2 { get; set; }
+
+        public int GoOrBack { get; set; } = 0;
     }
 }
