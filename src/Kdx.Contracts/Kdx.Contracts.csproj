@@ -8,13 +8,7 @@
     <!-- NuGet Package metadata -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Kdx.Contracts</PackageId>
-    <Version>1.0.0</Version>
-    <Authors>KANAMORI SYSTEM Inc.</Authors>
-    <Company>KANAMORI SYSTEM Inc.</Company>
-    <Product>KDX Projects</Product>
     <Description>Data Transfer Objects (DTOs) and interfaces for KDX Projects</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/HayatoShimada/KdxDesigner</RepositoryUrl>
     <PackageTags>kdx;dto;contracts</PackageTags>
   </PropertyGroup>
 

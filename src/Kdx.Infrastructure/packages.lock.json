@@ -221,6 +221,7 @@
         "type": "Project",
         "dependencies": {
           "Kdx.Contracts": "[1.0.0, )",
+          "Kdx.Infrastructure.Supabase": "[1.0.0, )",
           "Npgsql": "[9.0.3, )"
         }
       },
@@ -228,7 +229,6 @@
         "type": "Project",
         "dependencies": {
           "Kdx.Contracts": "[1.0.0, )",
-          "Kdx.Core": "[1.0.0, )",
           "Npgsql": "[9.0.3, )",
           "postgrest-csharp": "[3.5.1, )",
           "supabase-csharp": "[0.16.2, )"

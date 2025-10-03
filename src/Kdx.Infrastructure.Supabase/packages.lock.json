@@ -191,6 +191,7 @@
         "type": "Project",
         "dependencies": {
           "Kdx.Contracts": "[1.0.0, )",
+          "Kdx.Infrastructure.Supabase": "[1.0.0, )",
           "Npgsql": "[9.0.3, )"
         }
       }

@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kdx.Infrastructure", "src\K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kdx.Infrastructure.Supabase", "src\Kdx.Infrastructure.Supabase\Kdx.Infrastructure.Supabase.csproj", "{E3AF622F-BB8D-4606-885A-B7674007D1A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kdx.Contracts.ViewModels", "src\Kdx.Contracts.ViewModels\Kdx.Contracts.ViewModels.csproj", "{10683CE3-E5BA-4735-A40A-919F03113D40}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,18 +71,6 @@ Global
 		{E3AF622F-BB8D-4606-885A-B7674007D1A1}.Release|x64.Build.0 = Release|Any CPU
 		{E3AF622F-BB8D-4606-885A-B7674007D1A1}.Release|x86.ActiveCfg = Release|Any CPU
 		{E3AF622F-BB8D-4606-885A-B7674007D1A1}.Release|x86.Build.0 = Release|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Debug|x64.Build.0 = Debug|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Debug|x86.Build.0 = Debug|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Release|x64.ActiveCfg = Release|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Release|x64.Build.0 = Release|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Release|x86.ActiveCfg = Release|Any CPU
-		{10683CE3-E5BA-4735-A40A-919F03113D40}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +80,5 @@ Global
 		{6EBF2C0C-AA1E-46D0-B73A-345702D025C2} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{CC64B629-3909-4E83-8521-7AB0BFD38C26} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{E3AF622F-BB8D-4606-885A-B7674007D1A1} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{10683CE3-E5BA-4735-A40A-919F03113D40} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal

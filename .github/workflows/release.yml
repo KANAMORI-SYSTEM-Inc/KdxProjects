@@ -99,7 +99,6 @@ jobs:
           dotnet add package Kdx.Core --version ${{ steps.get_version.outputs.VERSION }}
           dotnet add package Kdx.Infrastructure --version ${{ steps.get_version.outputs.VERSION }}
           dotnet add package Kdx.Infrastructure.Supabase --version ${{ steps.get_version.outputs.VERSION }}
-          dotnet add package Kdx.Contracts.ViewModels --version ${{ steps.get_version.outputs.VERSION }}
           ```
 
           ### 📚 Documentation

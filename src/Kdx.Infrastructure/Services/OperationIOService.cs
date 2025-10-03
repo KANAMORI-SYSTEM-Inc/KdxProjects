@@ -1,5 +1,6 @@
 using Kdx.Contracts.DTOs;
 using Kdx.Contracts.Interfaces;
+using Kdx.Infrastructure.Supabase.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Kdx.Infrastructure.Services
     /// </summary>
     public class OperationIOService : IOperationIOService
     {
-        private readonly IAccessRepository _repository;
+        private readonly ISupabaseRepository _repository;
 
-        public OperationIOService(IAccessRepository repository)
+        public OperationIOService(ISupabaseRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
@@ -25,7 +26,7 @@ namespace Kdx.Infrastructure.Services
         {
             try
             {
-                return _repository.GetOperationIOs(operationId);
+                return Task.Run(async () => await _repository.GetOperationIOsAsync(operationId)).GetAwaiter().GetResult();
             }
             catch (Exception ex) when (ex.Message.Contains("OperationIO") && ex.Message.Contains("見つかりませんでした"))
             {
@@ -41,7 +42,7 @@ namespace Kdx.Infrastructure.Services
         {
             try
             {
-                return _repository.GetIOOperations(ioAddress, plcId);
+                return Task.Run(async () => await _repository.GetIOOperationsAsync(ioAddress, plcId)).GetAwaiter().GetResult();
             }
             catch (Exception ex) when (ex.Message.Contains("OperationIO") && ex.Message.Contains("見つかりませんでした"))
             {
@@ -55,7 +56,7 @@ namespace Kdx.Infrastructure.Services
         public void AddAssociation(int operationId, string ioAddress, int plcId, string ioUsage, string? comment = null)
         {
             // 既存の関連付けをチェック
-            var existing = _repository.GetOperationIOs(operationId)
+            var existing = Task.Run(async () => await _repository.GetOperationIOsAsync(operationId)).GetAwaiter().GetResult()
                 .FirstOrDefault(o => o.IOAddress == ioAddress && o.PlcId == plcId);
 
             if (existing != null)
@@ -63,7 +64,7 @@ namespace Kdx.Infrastructure.Services
                 throw new InvalidOperationException("この関連付けは既に存在します。");
             }
 
-            _repository.AddOperationIOAssociation(operationId, ioAddress, plcId, ioUsage, comment);
+            Task.Run(async () => await _repository.AddOperationIOAssociationAsync(operationId, ioAddress, plcId, ioUsage, comment)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace Kdx.Infrastructure.Services
         /// </summary>
         public void RemoveAssociation(int operationId, string ioAddress, int plcId)
         {
-            _repository.RemoveOperationIOAssociation(operationId, ioAddress, plcId);
+            Task.Run(async () => await _repository.RemoveOperationIOAssociationAsync(operationId, ioAddress, plcId)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Kdx.Infrastructure.Services
         {
             try
             {
-                return _repository.GetAllOperationIOAssociations(plcId);
+                return Task.Run(async () => await _repository.GetAllOperationIOAssociationsAsync(plcId)).GetAwaiter().GetResult();
             }
             catch (Exception ex) when (ex.Message.Contains("OperationIO") && ex.Message.Contains("見つかりませんでした"))
             {

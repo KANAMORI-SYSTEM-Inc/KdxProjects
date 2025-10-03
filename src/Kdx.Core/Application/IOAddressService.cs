@@ -2,6 +2,7 @@ using System.Text;
 using Kdx.Contracts.DTOs;
 using Kdx.Contracts.Enums;
 using Kdx.Contracts.Interfaces;
+using Kdx.Infrastructure.Supabase.Repositories;
 
 namespace Kdx.Core.Application
 {
@@ -14,13 +15,13 @@ namespace Kdx.Core.Application
         private const string _underscorePrefix = "_";
 
         private readonly IErrorAggregator _errorAggregator;
-        private readonly IAccessRepository _repository;
+        private readonly ISupabaseRepository _repository;
         private readonly IIOSelectorService _ioSelectorService;
         private readonly int _plcId;
 
         public IOAddressService(
             IErrorAggregator errorAggregator,
-            IAccessRepository repository,
+            ISupabaseRepository repository,
             int plcId,
             IIOSelectorService ioSelectorService)
         {
@@ -212,7 +213,7 @@ namespace Kdx.Core.Application
 
             if (ioText.StartsWith(_lengthPrefix, StringComparison.OrdinalIgnoreCase))
             {
-                var lengthList = _repository.GetLengthByPlcId(_plcId);
+                var lengthList = Task.Run(async () => await _repository.GetLengthByPlcIdAsync(_plcId)).GetAwaiter().GetResult();
 
                 // まず、条件に一致するオブジェクト自体を検索
                 var foundLengthObject = lengthList?.FirstOrDefault(s =>

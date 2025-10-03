@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
 
     <!-- NuGet Package metadata -->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageId>Kdx.Infrastructure.Supabase</PackageId>
-    <Description>Supabase-specific infrastructure implementation for KDX Projects</Description>
-    <PackageTags>kdx;infrastructure;supabase;repository</PackageTags>
+    <PackageId>Kdx.Contracts.ViewModels</PackageId>
+    <Description>WPF ViewModels contracts for KDX Projects</Description>
+    <PackageTags>kdx;viewmodels;wpf;contracts</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,9 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="supabase-csharp" Version="0.16.2" />
-    <PackageReference Include="postgrest-csharp" Version="3.5.1" />
-    <PackageReference Include="Npgsql" Version="9.0.3" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>

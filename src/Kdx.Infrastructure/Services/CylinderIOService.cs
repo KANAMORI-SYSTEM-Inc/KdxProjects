@@ -1,5 +1,6 @@
 using Kdx.Contracts.DTOs;
 using Kdx.Contracts.Interfaces;
+using Kdx.Infrastructure.Supabase.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Kdx.Infrastructure.Services
     /// </summary>
     public class CylinderIOService : ICylinderIOService
     {
-        private readonly IAccessRepository _repository;
+        private readonly ISupabaseRepository _repository;
 
-        public CylinderIOService(IAccessRepository repository)
+        public CylinderIOService(ISupabaseRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
@@ -25,7 +26,7 @@ namespace Kdx.Infrastructure.Services
         {
             try
             {
-                return _repository.GetCylinderIOs(cylinderId, plcId);
+                return Task.Run(async () => await _repository.GetCylinderIOsAsync(cylinderId, plcId)).GetAwaiter().GetResult();
             }
             catch (Exception ex) when (ex.Message.Contains("CylinderIO") && ex.Message.Contains("見つかりませんでした"))
             {
@@ -39,7 +40,7 @@ namespace Kdx.Infrastructure.Services
         /// </summary>
         public List<CylinderIO> GetIOCylinders(string ioAddress, int plcId)
         {
-            return _repository.GetIOCylinders(ioAddress, plcId);
+            return Task.Run(async () => await _repository.GetIOCylindersAsync(ioAddress, plcId)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace Kdx.Infrastructure.Services
         public void AddAssociation(int cylinderId, string ioAddress, int plcId, string ioType, string? comment = null)
         {
             // 既存の関連付けをチェック
-            var existing = _repository.GetCylinderIOs(cylinderId, plcId)
+            var existing = Task.Run(async () => await _repository.GetCylinderIOsAsync(cylinderId, plcId)).GetAwaiter().GetResult()
                 .FirstOrDefault(c => c.IOAddress == ioAddress);
 
             if (existing != null)
@@ -56,7 +57,7 @@ namespace Kdx.Infrastructure.Services
                 throw new InvalidOperationException("この関連付けは既に存在します。");
             }
 
-            _repository.AddCylinderIOAssociation(cylinderId, ioAddress, plcId, ioType, comment);
+            Task.Run(async () => await _repository.AddCylinderIOAssociationAsync(cylinderId, ioAddress, plcId, ioType, comment)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace Kdx.Infrastructure.Services
         /// </summary>
         public void RemoveAssociation(int cylinderId, string ioAddress, int plcId)
         {
-            _repository.RemoveCylinderIOAssociation(cylinderId, ioAddress, plcId);
+            Task.Run(async () => await _repository.RemoveCylinderIOAssociationAsync(cylinderId, ioAddress, plcId)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace Kdx.Infrastructure.Services
         /// </summary>
         public List<CylinderIO> GetAllAssociations(int plcId)
         {
-            return _repository.GetAllCylinderIOAssociations(plcId);
+            return Task.Run(async () => await _repository.GetAllCylinderIOAssociationsAsync(plcId)).GetAwaiter().GetResult();
         }
     }
 }
