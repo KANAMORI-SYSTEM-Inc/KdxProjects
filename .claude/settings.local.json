@@ -12,7 +12,8 @@
       "Bash(dotnet new:*)",
       "Bash(dotnet add:*)",
       "Bash(copy appsettings.test.json appsettings.test.json.template)",
-      "Bash(dotnet sln add:*)"
+      "Bash(dotnet sln add:*)",
+      "Bash(dotnet test:*)"
     ],
     "deny": [],
     "ask": []

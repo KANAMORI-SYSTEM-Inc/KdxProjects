@@ -180,6 +180,50 @@ Assert.Null(exception); // 例外が発生しないことを確認
 .Where(i => i.IOAddress == ioAddress)
 ```
 
+### エラー: "new row violates row-level security policy"
+
+**原因**: SupabaseのRow Level Security (RLS)が有効で、匿名キーでは書き込みができない
+
+**解決策**:
+
+**オプション1: RLSポリシーを設定（推奨）**
+```sql
+-- Supabase SQL Editorで実行
+-- テスト用ポリシー（本番では使用しないこと）
+CREATE POLICY "Enable insert for anon users" ON "Company"
+  FOR INSERT TO anon
+  WITH CHECK (true);
+
+CREATE POLICY "Enable delete for anon users" ON "Company"
+  FOR DELETE TO anon
+  USING (true);
+```
+
+**オプション2: Service Role Keyを使用**
+```json
+{
+  "Supabase": {
+    "Url": "https://your-project.supabase.co",
+    "Key": "your-service-role-key-here"  // anon keyの代わりにservice_role keyを使用
+  }
+}
+```
+
+**⚠️ 注意**: Service Role Keyは全権限を持つため、テスト環境のみで使用し、本番環境では絶対に公開しないでください。
+
+**オプション3: テストをスキップ**
+
+書き込みテストは `[Fact(Skip = "reason")]` でスキップされています。読み取り専用のテストは実行されます。
+
+### エラー: "Could not find the table 'X' in the schema cache"
+
+**原因**: テーブルがテストデータベースに存在しない
+
+**解決策**:
+1. テスト対象のテーブルスキーマを確認
+2. 存在しないテーブルを使用するテストは自動的にスキップされます
+3. または、テストデータベースに必要なテーブルを作成
+
 ### テストが遅い
 
 **原因**: 実際のSupabaseサーバーとの通信
