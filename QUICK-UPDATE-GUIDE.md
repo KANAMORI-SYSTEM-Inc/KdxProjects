@@ -99,6 +99,12 @@ git push origin v2.0.1
 | 🐛 バグ修正 | `2.0.0` → `2.0.1` | `[BUG] Null reference in GetCompanyAsync` | `git tag -a v2.0.1 -m "Release v2.0.1"` |
 | ✨ 新機能（互換） | `2.0.1` → `2.1.0` | `[FEATURE] Add pagination support` | `git tag -a v2.1.0 -m "Release v2.1.0"` |
 | 💥 破壊的変更 | `2.1.0` → `3.0.0` | `[BREAKING] Change repository interface` | `git tag -a v3.0.0 -m "Release v3.0.0"` |
+| 🧪 ベータ版 | `2.1.0` → `2.1.1-beta` | `[FEATURE] Experimental feature` | `git tag -a v2.1.1-beta -m "Release v2.1.1-beta"` |
+| 🧪 アルファ版 | `2.0.0` → `2.0.1-alpha` | `[WIP] Work in progress` | `git tag -a v2.0.1-alpha -m "Release v2.0.1-alpha"` |
+
+**⚠️ 重要**: タグには必ず`v`プレフィックスとハイフン`-`を使用してください。
+- ✅ 正しい: `v2.1.1-beta`, `v2.1.1-alpha.1`, `v2.1.1-rc.1`
+- ❌ 間違い: `v2.1.1beta`, `v2.1.1_beta`, `2.1.1-beta` (vなし)
 
 ## 🎯 よくあるシナリオ
 

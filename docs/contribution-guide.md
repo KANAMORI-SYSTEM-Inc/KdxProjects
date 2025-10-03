@@ -583,36 +583,65 @@ public partial class SupabaseRepository
 
 ## テストガイドライン
 
-### ユニットテスト
+### 統合テスト
+
+統合テストは実際のSupabaseデータベースに対してクエリを実行し、WHERE句の正常動作やCRUD操作を検証します。
+
+詳細は **[tests/Kdx.Infrastructure.Supabase.Tests/README.md](../tests/Kdx.Infrastructure.Supabase.Tests/README.md)** を参照してください。
+
+```bash
+# すべてのテストを実行
+dotnet test
+
+# 特定のテストを実行
+dotnet test --filter FullyQualifiedName~SupabaseRepositoryTests
+```
+
+### テスト作成のベストプラクティス
+
+#### Arrange-Act-Assertパターン
 
 ```csharp
 [Fact]
-public async Task GetCompanyByIdAsync_ValidId_ReturnsCompany()
+public async Task GetCylinderIOsAsync_WithMultipleConditions_ShouldNotThrowParseError()
 {
-    // Arrange
-    var mockClient = new Mock<Client>();
-    var repository = new SupabaseRepository(mockClient.Object);
-    var expectedCompany = new Company { Id = 1, CompanyName = "Test" };
+    // Arrange - テストデータを準備
+    int testCylinderId = 1;
+    int testPlcId = 1;
 
-    // Act
-    var result = await repository.GetCompanyByIdAsync(1);
+    // Act - メソッドを実行
+    var exception = await Record.ExceptionAsync(async () =>
+    {
+        var cylinderIOs = await _repository.GetCylinderIOsAsync(testCylinderId, testPlcId);
+        Assert.NotNull(cylinderIOs);
+    });
 
-    // Assert
-    Assert.NotNull(result);
-    Assert.Equal(expectedCompany.Id, result.Id);
+    // Assert - 結果を検証
+    Assert.Null(exception);
 }
+```
 
-[Fact]
-public async Task GetCompanyByIdAsync_InvalidId_ThrowsException()
+#### テストデータの命名規則
+
+```csharp
+var testCompany = new Company
 {
-    // Arrange
-    var mockClient = new Mock<Client>();
-    var repository = new SupabaseRepository(mockClient.Object);
+    CompanyName = $"Test Company {Guid.NewGuid()}", // 一意性を保証
+    CreatedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+};
+```
 
-    // Act & Assert
-    await Assert.ThrowsAsync<ArgumentException>(
-        () => repository.GetCompanyByIdAsync(-1)
-    );
+#### クリーンアップの実施
+
+```csharp
+[Fact]
+public async Task AddAndDeleteCompany_ShouldSucceed()
+{
+    // Arrange & Act - 追加
+    var newId = await _repository.AddCompanyAsync(testCompany);
+
+    // Cleanup - 削除
+    await _repository.DeleteCompanyAsync(newId);
 }
 ```
 
@@ -621,6 +650,14 @@ public async Task GetCompanyByIdAsync_InvalidId_ThrowsException()
 - **最低ライン**: 70%
 - **推奨**: 80%以上
 - **クリティカルパス**: 100%
+
+### 新機能追加時のテスト要件
+
+新しいリポジトリメソッドを追加する際は、必ず以下のテストを含めてください:
+
+1. **パーサーエラー検証**: 複数条件のWHERE句が正常に動作すること
+2. **CRUD操作検証**: データの作成・取得・更新・削除が正常に機能すること
+3. **エッジケース検証**: 空データ、存在しないID等の境界値テスト
 
 ## バージョニングポリシー
 
