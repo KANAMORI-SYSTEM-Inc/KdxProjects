@@ -6,10 +6,10 @@ NuGetパッケージ群として提供されるKDXシステムのコアライブ
 
 | パッケージ名 | バージョン | 説明 |
 |-------------|----------|------|
-| **Kdx.Contracts** | 1.0.0 | DTOとインターフェースの定義 |
-| **Kdx.Core** | 1.0.0 | ビジネスロジックとアプリケーションサービス |
-| **Kdx.Infrastructure** | 1.0.0 | インフラストラクチャサービスの実装 |
-| **Kdx.Infrastructure.Supabase** | 1.0.0 | Supabase固有のリポジトリ実装 |
+| **Kdx.Contracts** | 2.0.1 | DTOとインターフェースの定義 |
+| **Kdx.Core** | 2.0.1 | ビジネスロジックとアプリケーションサービス |
+| **Kdx.Infrastructure** | 2.0.1 | インフラストラクチャサービスの実装 |
+| **Kdx.Infrastructure.Supabase** | 2.0.1 | Supabase固有のリポジトリ実装 |
 
 ## アーキテクチャ
 
