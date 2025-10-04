@@ -1619,7 +1619,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 ConditionNumber = interlockCondition.ConditionNumber,
                 InterlockSortId = interlockCondition.InterlockSortId,
                 ConditionTypeId = interlockCondition.ConditionTypeId,
-                Name = interlockCondition.Name
+                Name = interlockCondition.Name,
+                Device = interlockCondition.Device,
+                IsOnCondition = interlockCondition.IsOnCondition
                 // ConditionType is intentionally not copied
             };
 
@@ -1638,7 +1640,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 ConditionNumber = c.ConditionNumber,
                 InterlockSortId = c.InterlockSortId,
                 ConditionTypeId = c.ConditionTypeId,
-                Name = c.Name
+                Name = c.Name,
+                Device = c.Device,
+                IsOnCondition = c.IsOnCondition
                 // ConditionType is intentionally not copied
             }).ToList();
 

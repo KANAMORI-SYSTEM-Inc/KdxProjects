@@ -12,5 +12,9 @@ namespace Kdx.Contracts.DTOs
         public int? ConditionTypeId { get; set; }
 
         public string? Name { get; set; }
+
+        public string? Device { get; set; }
+
+        public bool? IsOnCondition { get; set; }
     }
 }
