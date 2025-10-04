@@ -89,8 +89,7 @@ namespace Kdx.Infrastructure.Services
                 existing.ConditionCylinderId == interlock.ConditionCylinderId &&
                 existing.SortId == interlock.SortId &&
                 existing.PreConditionID1 == interlock.PreConditionID1 &&
-                existing.PreConditionID2 == interlock.PreConditionID2 &&
-                existing.Id != interlock.Id);
+                existing.PreConditionID2 == interlock.PreConditionID2);
         }
 
         public bool ValidatePreConditionCombination(int? preCondition1, int? preCondition2)

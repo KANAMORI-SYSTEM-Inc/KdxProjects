@@ -13,7 +13,8 @@
       "Bash(dotnet add:*)",
       "Bash(copy appsettings.test.json appsettings.test.json.template)",
       "Bash(dotnet sln add:*)",
-      "Bash(dotnet test:*)"
+      "Bash(dotnet test:*)",
+      "Bash(Select-String \"error\")"
     ],
     "deny": [],
     "ask": []

@@ -2,45 +2,15 @@ namespace Kdx.Contracts.DTOs
 {
     public class InterlockCondition
     {
-        private int _id;
-        private int _interlockId;
-        private int _conditionNumber;
-        private int _conditionTypeId;
+        // 複合主キー: (InterlockId, ConditionNumber, InterlockSortId)
+        public int InterlockId { get; set; }
 
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                _id = value;
-            }
-        }
+        public int ConditionNumber { get; set; }
 
-        public int InterlockId
-        {
-            get => _interlockId;
-            set
-            {
-                _interlockId = value;
-            }
-        }
+        public int InterlockSortId { get; set; }
 
-        public int ConditionNumber
-        {
-            get => _conditionNumber;
-            set
-            {
-                _conditionNumber = value;
-            }
-        }
+        public int? ConditionTypeId { get; set; }
 
-        public int ConditionTypeId
-        {
-            get => _conditionTypeId;
-            set
-            {
-                _conditionTypeId = value;
-            }
-        }
+        public string? Name { get; set; }
     }
 }

@@ -7,40 +7,47 @@ namespace Kdx.Infrastructure.Supabase.Entities
     [Table("InterlockIO")]
     internal class InterlockIOEntity : BaseModel
     {
-        [PrimaryKey("PlcId")]
+        [PrimaryKey("InterlockId")] // 複合主キー
+        [Column("InterlockId")]
+        public int InterlockId { get; set; }
+
+        [PrimaryKey("PlcId")] // 複合主キー
         [Column("PlcId")]
         public int PlcId { get; set; }
 
-        [PrimaryKey("IOAddress")]
+        [PrimaryKey("IOAddress")] // 複合主キー
         [Column("IOAddress")]
-        public string? IOAddress { get; set; }
+        public string IOAddress { get; set; } = string.Empty;
 
-        [PrimaryKey("InterlockConditionId")]
-        [Column("InterlockConditionId")]
-        public int InterlockConditionId { get; set; }
+        [PrimaryKey("InterlockSortId")] // 複合主キー
+        [Column("InterlockSortId")]
+        public int InterlockSortId { get; set; }
+
+        [PrimaryKey("ConditionNumber")] // 複合主キー
+        [Column("ConditionNumber")]
+        public int ConditionNumber { get; set; }
 
         [Column("IsOnCondition")]
         public bool IsOnCondition { get; set; }
 
-        [Column("ConditionUniqueKey")]
-        public int ConditionUniqueKey { get; set; }
-
         public static InterlockIOEntity FromDto(InterlockIO dto) => new()
         {
+            InterlockId = dto.InterlockId,
             PlcId = dto.PlcId,
             IOAddress = dto.IOAddress,
-            InterlockConditionId = dto.InterlockConditionId,
-            IsOnCondition = dto.IsOnCondition,
-            ConditionUniqueKey = dto.ConditionUniqueKey
+            InterlockSortId = dto.InterlockSortId,
+            ConditionNumber = dto.ConditionNumber,
+            IsOnCondition = dto.IsOnCondition
         };
 
         public InterlockIO ToDto() => new()
         {
+            InterlockId = this.InterlockId,
             PlcId = this.PlcId,
             IOAddress = this.IOAddress,
-            InterlockConditionId = this.InterlockConditionId,
-            IsOnCondition = this.IsOnCondition,
-            ConditionUniqueKey = this.ConditionUniqueKey
+            InterlockSortId = this.InterlockSortId,
+            ConditionNumber = this.ConditionNumber,
+            IsOnCondition = this.IsOnCondition
         };
     }
 }

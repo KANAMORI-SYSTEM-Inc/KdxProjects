@@ -7,18 +7,16 @@ namespace Kdx.Infrastructure.Supabase.Entities
     [Table("Interlock")]
     internal class InterlockEntity : BaseModel
     {
-        [PrimaryKey("Id")]
-        [Column("Id")]
-        public int Id { get; set; }
-
-        [Column("PlcId")]
-        public int PlcId { get; set; }
-
+        [PrimaryKey("CylinderId")] // 複合主キー
         [Column("CylinderId")]
         public int CylinderId { get; set; }
 
+        [PrimaryKey("SortId")] // 複合主キー
         [Column("SortId")]
         public int SortId { get; set; }
+
+        [Column("PlcId")]
+        public int PlcId { get; set; }
 
         [Column("ConditionCylinderId")]
         public int ConditionCylinderId { get; set; }
@@ -29,26 +27,29 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("PreConditionID2")]
         public int? PreConditionID2 { get; set; }
 
+        [Column("GoOrBack")]
+        public int GoOrBack { get; set; }
+
         public static InterlockEntity FromDto(Interlock dto) => new()
         {
-            Id = dto.Id,
-            PlcId = dto.PlcId,
             CylinderId = dto.CylinderId,
             SortId = dto.SortId,
+            PlcId = dto.PlcId,
             ConditionCylinderId = dto.ConditionCylinderId,
             PreConditionID1 = dto.PreConditionID1,
-            PreConditionID2 = dto.PreConditionID2
+            PreConditionID2 = dto.PreConditionID2,
+            GoOrBack = dto.GoOrBack
         };
 
         public Interlock ToDto() => new()
         {
-            Id = this.Id,
-            PlcId = this.PlcId,
             CylinderId = this.CylinderId,
             SortId = this.SortId,
+            PlcId = this.PlcId,
             ConditionCylinderId = this.ConditionCylinderId,
             PreConditionID1 = this.PreConditionID1,
-            PreConditionID2 = this.PreConditionID2
+            PreConditionID2 = this.PreConditionID2,
+            GoOrBack = this.GoOrBack
         };
     }
 }

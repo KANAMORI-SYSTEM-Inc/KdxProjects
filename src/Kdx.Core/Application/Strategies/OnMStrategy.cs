@@ -19,7 +19,7 @@ namespace Kdx.Core.Application.Strategies
             {
                 if (interlockIO.IOAddress == null)
                 {
-                    throw new InvalidOperationException($"ON_1 IOAddress is null Interlock.ID:{ctx.Interlock.Id} InterlockCondition.ID");
+                    throw new InvalidOperationException($"ON_1 IOAddress is null Interlock (CylinderId:{ctx.Interlock.CylinderId}, SortId:{ctx.Interlock.SortId})");
                 }
 
                 if (isFirst)

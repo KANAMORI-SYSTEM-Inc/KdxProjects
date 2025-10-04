@@ -1512,27 +1512,92 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task UpsertInterlocksAsync(List<Interlock> interlocks)
         {
-            var entities = interlocks.Select(i => InterlockEntity.FromDto(i)).ToList();
-            await _supabaseClient
-                .From<InterlockEntity>()
-                .Upsert(entities);
+            // 重複を除去（同じPlcId + CylinderId + SortIdを持つレコードは1つだけ保持）
+            var uniqueInterlocks = interlocks
+                .GroupBy(i => new { i.PlcId, i.CylinderId, i.SortId })
+                .Select(g => g.First()) // 最初のレコードを使用
+                .ToList();
+
+            // 既存レコードを取得して、Insert/Updateを判断
+            var plcIds = uniqueInterlocks.Select(i => i.PlcId).Distinct().ToList();
+            if (!plcIds.Any()) return;
+
+            var existingRecords = new List<Interlock>();
+            foreach (var plcId in plcIds)
+            {
+                var records = await _supabaseClient
+                    .From<InterlockEntity>()
+                    .Where(i => i.PlcId == plcId)
+                    .Get();
+                existingRecords.AddRange(records.Models.Select(e => e.ToDto()));
+            }
+
+            // 新規作成と更新に分ける
+            var toInsert = new List<Interlock>();
+            var toUpdate = new List<Interlock>();
+
+            foreach (var interlock in uniqueInterlocks)
+            {
+                var existing = existingRecords.FirstOrDefault(e =>
+                    e.PlcId == interlock.PlcId &&
+                    e.CylinderId == interlock.CylinderId &&
+                    e.SortId == interlock.SortId);
+
+                if (existing != null)
+                {
+                    // 既存レコードを更新
+                    toUpdate.Add(interlock);
+                }
+                else
+                {
+                    // 新規作成
+                    toInsert.Add(interlock);
+                }
+            }
+
+            // 新規作成: Insert
+            if (toInsert.Any())
+            {
+                var newEntities = toInsert.Select(i => InterlockEntity.FromDto(i)).ToList();
+                await _supabaseClient
+                    .From<InterlockEntity>()
+                    .Insert(newEntities);
+            }
+
+            // 既存更新: Update (1件ずつ更新)
+            if (toUpdate.Any())
+            {
+                foreach (var interlock in toUpdate)
+                {
+                    var entity = InterlockEntity.FromDto(interlock);
+                    await _supabaseClient
+                        .From<InterlockEntity>()
+                        .Where(i => i.CylinderId == entity.CylinderId)
+                        .Where(i => i.SortId == entity.SortId)
+                        .Update(entity);
+                }
+            }
         }
 
         public async Task DeleteInterlockAsync(Interlock interlock)
         {
             await _supabaseClient
                 .From<InterlockEntity>()
-                .Where(i => i.Id == interlock.Id)
+                .Where(i => i.CylinderId == interlock.CylinderId)
+                .Where(i => i.SortId == interlock.SortId)
                 .Delete();
         }
 
         public async Task DeleteInterlocksAsync(List<Interlock> interlocks)
         {
-            var ids = interlocks.Select(i => i.Id).ToList();
-            await _supabaseClient
-                .From<InterlockEntity>()
-                .Where(i => ids.Contains(i.Id))
-                .Delete();
+            foreach (var interlock in interlocks)
+            {
+                await _supabaseClient
+                    .From<InterlockEntity>()
+                    .Where(i => i.CylinderId == interlock.CylinderId)
+                    .Where(i => i.SortId == interlock.SortId)
+                    .Delete();
+            }
         }
 
         // InterlockCondition
@@ -1550,10 +1615,11 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             // Create a clean copy without navigation properties
             var cleanCondition = new InterlockCondition
             {
-                Id = interlockCondition.Id,
                 InterlockId = interlockCondition.InterlockId,
                 ConditionNumber = interlockCondition.ConditionNumber,
-                ConditionTypeId = interlockCondition.ConditionTypeId
+                InterlockSortId = interlockCondition.InterlockSortId,
+                ConditionTypeId = interlockCondition.ConditionTypeId,
+                Name = interlockCondition.Name
                 // ConditionType is intentionally not copied
             };
 
@@ -1568,53 +1634,103 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             // Create clean copies without navigation properties
             var cleanConditions = interlockConditions.Select(c => new InterlockCondition
             {
-                Id = c.Id,
                 InterlockId = c.InterlockId,
                 ConditionNumber = c.ConditionNumber,
-                ConditionTypeId = c.ConditionTypeId
+                InterlockSortId = c.InterlockSortId,
+                ConditionTypeId = c.ConditionTypeId,
+                Name = c.Name
                 // ConditionType is intentionally not copied
             }).ToList();
 
-            var entities = cleanConditions.Select(cc => InterlockConditionEntity.FromDto(cc)).ToList();
-            await _supabaseClient
-                .From<InterlockConditionEntity>()
-                .Upsert(entities);
+            // 重複を除去（同じInterlockId + ConditionNumber + InterlockSortIdを持つレコードは1つだけ保持）
+            var uniqueConditions = cleanConditions
+                .GroupBy(c => new { c.InterlockId, c.ConditionNumber, c.InterlockSortId })
+                .Select(g => g.First()) // 最初のレコードを使用
+                .ToList();
+
+            // 既存レコードを取得して、Insert/Updateを判断
+            var interlockIds = uniqueConditions.Select(c => c.InterlockId).Distinct().ToList();
+            if (!interlockIds.Any()) return;
+
+            var existingRecords = new List<InterlockCondition>();
+            foreach (var interlockId in interlockIds)
+            {
+                var records = await _supabaseClient
+                    .From<InterlockConditionEntity>()
+                    .Where(c => c.InterlockId == interlockId)
+                    .Get();
+                existingRecords.AddRange(records.Models.Select(e => e.ToDto()));
+            }
+
+            // 新規作成と更新に分ける
+            var toInsert = new List<InterlockCondition>();
+            var toUpdate = new List<InterlockCondition>();
+
+            foreach (var condition in uniqueConditions)
+            {
+                var existing = existingRecords.FirstOrDefault(e =>
+                    e.InterlockId == condition.InterlockId &&
+                    e.ConditionNumber == condition.ConditionNumber &&
+                    e.InterlockSortId == condition.InterlockSortId);
+
+                if (existing != null)
+                {
+                    // 既存レコードを更新
+                    toUpdate.Add(condition);
+                }
+                else
+                {
+                    // 新規作成
+                    toInsert.Add(condition);
+                }
+            }
+
+            // 新規作成: Insert
+            if (toInsert.Any())
+            {
+                var newEntities = toInsert.Select(c => InterlockConditionEntity.FromDto(c)).ToList();
+                await _supabaseClient
+                    .From<InterlockConditionEntity>()
+                    .Insert(newEntities);
+            }
+
+            // 既存更新: Update (1件ずつ更新)
+            if (toUpdate.Any())
+            {
+                foreach (var condition in toUpdate)
+                {
+                    var entity = InterlockConditionEntity.FromDto(condition);
+                    await _supabaseClient
+                        .From<InterlockConditionEntity>()
+                        .Where(c => c.InterlockId == entity.InterlockId)
+                        .Where(c => c.ConditionNumber == entity.ConditionNumber)
+                        .Where(c => c.InterlockSortId == entity.InterlockSortId)
+                        .Update(entity);
+                }
+            }
         }
 
         public async Task DeleteInterlockConditionAsync(InterlockConditionDTO interlockCondition)
         {
-            // Create clean copies without navigation properties
-            InterlockCondition cleanCondition = new InterlockCondition
-            {
-                Id = interlockCondition.Id,
-                InterlockId = interlockCondition.InterlockId,
-                ConditionNumber = interlockCondition.ConditionNumber,
-                ConditionTypeId = interlockCondition.ConditionTypeId
-                // ConditionType is intentionally not copied
-            };
-
             await _supabaseClient
                 .From<InterlockConditionEntity>()
-                .Where(ic => ic.Id == interlockCondition.Id)
+                .Where(ic => ic.InterlockId == interlockCondition.InterlockId)
+                .Where(ic => ic.ConditionNumber == interlockCondition.ConditionNumber)
+                .Where(ic => ic.InterlockSortId == interlockCondition.InterlockSortId)
                 .Delete();
         }
 
         public async Task DeleteInterlockConditionsAsync(List<InterlockConditionDTO> interlockConditions)
         {
-            // Create clean copies without navigation properties
-            var cleanConditions = interlockConditions.Select(c => new InterlockConditionDTO
+            foreach (var condition in interlockConditions)
             {
-                Id = c.Id,
-                InterlockId = c.InterlockId,
-                ConditionNumber = c.ConditionNumber,
-                ConditionTypeId = c.ConditionTypeId
-                // ConditionType is intentionally not copied
-            });
-
-            await _supabaseClient
-                .From<InterlockConditionEntity>()
-                .Where(ic => interlockConditions.Select(c => c.Id).Contains(ic.Id))
-                .Delete();
+                await _supabaseClient
+                    .From<InterlockConditionEntity>()
+                    .Where(ic => ic.InterlockId == condition.InterlockId)
+                    .Where(ic => ic.ConditionNumber == condition.ConditionNumber)
+                    .Where(ic => ic.InterlockSortId == condition.InterlockSortId)
+                    .Delete();
+            }
         }
 
         public async Task<List<ViewInterlockConditions>> GetViewInterlockConditionsByPlcIdAsync(int plcId)
@@ -1627,11 +1743,11 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         }
 
         // InterlockIO
-        public async Task<List<InterlockIO>> GetInterlockIOsByInterlockIdAsync(int interlockConditionId)
+        public async Task<List<InterlockIO>> GetInterlockIOsByInterlockIdAsync(int interlockId)
         {
             var response = await _supabaseClient
                 .From<InterlockIOEntity>()
-                .Where(i => i.InterlockConditionId == interlockConditionId)
+                .Where(i => i.InterlockId == interlockId)
                 .Get();
             return response.Models.Select(e => e.ToDto()).ToList();
         }
@@ -1656,9 +1772,11 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<InterlockIOEntity>()
+                .Where(i => i.InterlockId == interlockIO.InterlockId)
                 .Where(i => i.PlcId == interlockIO.PlcId)
                 .Where(i => i.IOAddress == interlockIO.IOAddress)
-                .Where(i => i.InterlockConditionId == interlockIO.InterlockConditionId)
+                .Where(i => i.InterlockSortId == interlockIO.InterlockSortId)
+                .Where(i => i.ConditionNumber == interlockIO.ConditionNumber)
                 .Delete();
         }
 

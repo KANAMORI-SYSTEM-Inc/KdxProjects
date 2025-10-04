@@ -223,9 +223,11 @@ public class SupabaseRepositoryTests : TestBase
         // Arrange
         var testInterlockIO = new InterlockIO
         {
+            InterlockId = 999,
             PlcId = 999,
             IOAddress = "X9999",
-            InterlockConditionId = 999
+            InterlockSortId = 999,
+            ConditionNumber = 999
         };
 
         // Act & Assert - このテストではParse errorが発生しないことを確認

@@ -6,21 +6,13 @@ namespace Kdx.Contracts.DTOs
 {
     public class InterlockConditionDTO : INotifyPropertyChanged
     {
-        private int _id;
+        // 複合主キー: (InterlockId, ConditionNumber, InterlockSortId)
         private int _interlockId;
         private int _conditionNumber;
-        private int _conditionTypeId;
+        private int _interlockSortId;
+        private int? _conditionTypeId;
+        private string? _name;
         private InterlockConditionType? _conditionType;
-
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                _id = value;
-                OnPropertyChanged();
-            }
-        }
 
         public int InterlockId
         {
@@ -42,12 +34,32 @@ namespace Kdx.Contracts.DTOs
             }
         }
 
-        public int ConditionTypeId
+        public int InterlockSortId
+        {
+            get => _interlockSortId;
+            set
+            {
+                _interlockSortId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int? ConditionTypeId
         {
             get => _conditionTypeId;
             set
             {
                 _conditionTypeId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string? Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
                 OnPropertyChanged();
             }
         }
