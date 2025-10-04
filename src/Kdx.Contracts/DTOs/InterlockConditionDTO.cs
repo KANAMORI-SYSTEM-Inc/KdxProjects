@@ -64,6 +64,28 @@ namespace Kdx.Contracts.DTOs
             }
         }
 
+        private string? _device;
+        public string? Device
+        {
+            get => _device;
+            set
+            {
+                _device = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool? _isOnCondition;
+        public bool? IsOnCondition
+        {
+            get => _isOnCondition;
+            set
+            {
+                _isOnCondition = value;
+                OnPropertyChanged();
+            }
+        }
+
         // Navigation property (not mapped to database)
         [JsonIgnore]
         public InterlockConditionType? ConditionType
