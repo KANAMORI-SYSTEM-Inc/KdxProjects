@@ -251,6 +251,24 @@ namespace Kdx.Core.Application
                 interlock, precondition1, precondition2, conditions, interlockIOs);
         }
 
+        public List<LadderCsvRow> ANY(
+            int plcId,
+            int ErrorNumber,
+            string ErrorDevice,
+            string ErrorOutputDevice,
+            Cycle cycle,
+            List<MnemonicDeviceWithProcessDetail> mnemonicDevices,
+            Cylinder cylinder,
+            Interlock interlock,
+            InterlockPrecondition1 precondition1,
+            InterlockPrecondition2? precondition2,
+            List<InterlockCondition> conditions,
+            List<InterlockIO> interlockIOs)
+        {
+            return BuildInternal("ANY", plcId, ErrorNumber, ErrorDevice, ErrorOutputDevice, cycle, mnemonicDevices, cylinder,
+                interlock, precondition1, precondition2, conditions, interlockIOs);
+        }
+
         private List<LadderCsvRow> BuildInternal(
             string key,
             int plcId,

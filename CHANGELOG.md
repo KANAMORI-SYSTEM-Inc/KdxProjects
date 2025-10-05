@@ -6,6 +6,18 @@
 このプロジェクトは [Semantic Versioning](https://semver.org/lang/ja/) に準拠しています。
 
 ## [Unreleased]
+### Changed (BREAKING CHANGES)
+
+- [[BREAKING] IOとCylinderを密接に関連付ける #1](https://github.com/KANAMORI-SYSTEM-Inc/KdxProjects/issues/8)
+
+### Added
+
+- [[FEATURE] InterlockCondition Deviceの活用 #8](https://github.com/KANAMORI-SYSTEM-Inc/KdxProjects/issues/1)
+
+### Fixed
+
+### Technical
+
 
 ## [2.0.0] - 2025-10-04
 
@@ -19,8 +31,6 @@
 - `InterlockCondition`に不足していたフィールドを追加
   - `InterlockSortId`: インターロックソートID（複合主キーの一部）
   - `Name`: 条件名
-  - `Device`: デバイス名
-  - `IsOnCondition`: ON条件フラグ
 
 ### Fixed
 - Upsert操作での重複キーエラー「ON CONFLICT DO UPDATE command cannot affect row a second time」を修正
