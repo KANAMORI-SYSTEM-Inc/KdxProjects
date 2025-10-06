@@ -7,5 +7,7 @@ namespace Kdx.Contracts.DTOs
         public string? CompanyName { get; set; }
 
         public string? CreatedAt { get; set; }
+
+        public string? Address { get; set; } 
     }
 }
