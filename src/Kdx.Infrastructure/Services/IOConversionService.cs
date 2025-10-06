@@ -39,6 +39,9 @@ namespace Kdx.Infrastructure.Services
         /// data is found.</returns>
         public List<IO> ConvertExcelToIOList(ConversionSettings settings)
         {
+            // EPPlus 8 ライセンス設定
+            ExcelPackage.License.SetNonCommercialPersonal("Personal");
+
             var result = new List<IO>();
 
             using var package = new ExcelPackage(new FileInfo(settings.SourceFilePath));
