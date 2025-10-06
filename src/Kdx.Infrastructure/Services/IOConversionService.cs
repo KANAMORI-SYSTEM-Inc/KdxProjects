@@ -75,8 +75,9 @@ namespace Kdx.Infrastructure.Services
                             adCounter++;
                             var addressHex = address.Substring(1, 3);
                             var addressDec = Convert.ToInt32(addressHex, 16) * 16;
+                            var addressPrefix = address.Substring(0, 1);
 
-                            var adIOs = ProcessADData(worksheet, row + 2, addressDec, adCounter);
+                            var adIOs = ProcessADData(worksheet, row + 2, addressDec, adCounter, addressPrefix);
                             foreach (var io in adIOs)
                             {
                                 io.PlcId = settings.PlcId;
@@ -292,7 +293,7 @@ namespace Kdx.Infrastructure.Services
             return (deviceNum, seigyo, matsuN);
         }
 
-        private List<IO> ProcessADData(ExcelWorksheet worksheet, int startRow, int addressDec, int adCounter)
+        private List<IO> ProcessADData(ExcelWorksheet worksheet, int startRow, int addressDec, int adCounter, string addressPrefix)
         {
             var result = new List<IO>();
             var isOdd = adCounter % 2 == 1;
@@ -334,13 +335,13 @@ namespace Kdx.Infrastructure.Services
             {
                 var io = new IO
                 {
-                    Address = "F" + (addressDec + i).ToString("D4"),
+                    Address = addressPrefix + (addressDec + i).ToString("X"),
                     XComment = xComments[i],
                     YComment = yComments[i],
 
                 };
                 result.Add(io);
-                
+
             }
 
             return result;
