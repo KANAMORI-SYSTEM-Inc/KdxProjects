@@ -81,6 +81,8 @@ namespace Kdx.Infrastructure.Services
                             {
                                 io.PlcId = settings.PlcId;
                                 io.StationNumber = sheetName;
+                                io.IOSpot = worksheet.Cells[row - 3, 6].Text; // 制御盤情報
+                                io.System = worksheet.Cells[row - 2, 11].Text.Replace("局番:", ""); // 局番
                             }
                             result.AddRange(adIOs);
                         }
@@ -330,16 +332,15 @@ namespace Kdx.Infrastructure.Services
 
             for (int i = 0; i <= 15; i++)
             {
-                if (!string.IsNullOrEmpty(xComments[i]) || !string.IsNullOrEmpty(yComments[i]))
+                var io = new IO
                 {
-                    var io = new IO
-                    {
-                        Address = "F" + (addressDec + i).ToString("D4"),
-                        XComment = xComments[i],
-                        YComment = yComments[i]
-                    };
-                    result.Add(io);
-                }
+                    Address = "F" + (addressDec + i).ToString("D4"),
+                    XComment = xComments[i],
+                    YComment = yComments[i],
+
+                };
+                result.Add(io);
+                
             }
 
             return result;
