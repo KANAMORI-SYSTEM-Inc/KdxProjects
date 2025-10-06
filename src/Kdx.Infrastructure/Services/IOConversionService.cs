@@ -334,6 +334,7 @@ namespace Kdx.Infrastructure.Services
                 {
                     var io = new IO
                     {
+                        Address = "F" + (addressDec + i).ToString("D4"),
                         XComment = xComments[i],
                         YComment = yComments[i]
                     };
