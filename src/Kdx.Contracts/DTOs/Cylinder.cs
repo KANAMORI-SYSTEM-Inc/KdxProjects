@@ -23,5 +23,8 @@ namespace Kdx.Contracts.DTOs
         public int? FlowCount { get; set; }
         public string? FlowCYGo { get; set; } = string.Empty;
         public string? FlowCYBack { get; set; } = string.Empty;
+
+        // MachineNameテーブルからのナビゲーションプロパティ
+        public string? MachineNameFullName { get; set; }
     }
 }
