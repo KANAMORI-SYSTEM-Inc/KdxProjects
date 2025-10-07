@@ -31,9 +31,6 @@ namespace Kdx.Contracts.DTOs
 
         public string? LinkDevice { get; set; }
 
-        // Properties from KdxMigrationAPI version
-        public string? Name { get; set; }
-
         public int IOType { get; set; }
 
         public bool IsInverted { get; set; }

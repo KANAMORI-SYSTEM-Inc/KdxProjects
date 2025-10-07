@@ -51,9 +51,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("LinkDevice")]
         public string? LinkDevice { get; set; }
 
-        [Column("Name")]
-        public string? Name { get; set; }
-
         [Column("IOType")]
         public int IOType { get; set; }
 
@@ -85,7 +82,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
             StationNumber = dto.StationNumber,
             IONameNaked = dto.IONameNaked,
             LinkDevice = dto.LinkDevice,
-            Name = dto.Name,
             IOType = dto.IOType,
             IsInverted = dto.IsInverted,
             IsEnabled = dto.IsEnabled,
@@ -109,7 +105,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
             StationNumber = this.StationNumber,
             IONameNaked = this.IONameNaked,
             LinkDevice = this.LinkDevice,
-            Name = this.Name,
             IOType = this.IOType,
             IsInverted = this.IsInverted,
             IsEnabled = this.IsEnabled,
