@@ -2,7 +2,7 @@ namespace Kdx.Contracts.DTOs
 {
     public class IO
     {
-        public string Address { get; set; } = string.Empty; // ƒAƒhƒŒƒX
+        public string Address { get; set; } = string.Empty; // ï¿½Aï¿½hï¿½ï¿½ï¿½X
 
         public int PlcId { get; set; }
 
@@ -15,17 +15,17 @@ namespace Kdx.Contracts.DTOs
 
         public string? FComment { get; set; } // F_Comment
 
-        public string? IOName { get; set; } // ƒAƒNƒ`ƒ…ƒG[ƒ^–¼Ì
+        public string? IOName { get; set; } // ï¿½Aï¿½Nï¿½`ï¿½ï¿½ï¿½Gï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½
 
-        public string? IOExplanation { get; set; } // ƒAƒNƒ`ƒ…ƒG[ƒ^à–¾
+        public string? IOExplanation { get; set; } // ï¿½Aï¿½Nï¿½`ï¿½ï¿½ï¿½Gï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½
 
-        public string? IOSpot { get; set; } // ƒ†ƒjƒbƒgİ’uêŠ
+        public string? IOSpot { get; set; } // ï¿½ï¿½ï¿½jï¿½bï¿½gï¿½İ’uï¿½êŠ
 
-        public string? UnitName { get; set; } // ƒ†ƒjƒbƒg–¼Ì
+        public string? UnitName { get; set; } // ï¿½ï¿½ï¿½jï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
 
-        public string? System { get; set; } // Œn“
+        public string? System { get; set; } // ï¿½nï¿½ï¿½
 
-        public string? StationNumber { get; set; } // ‹Ç”Ô
+        public string? StationNumber { get; set; } // ï¿½Ç”ï¿½
 
         public string? IONameNaked { get; set; }
 
@@ -36,9 +36,5 @@ namespace Kdx.Contracts.DTOs
         public bool IsInverted { get; set; }
 
         public bool IsEnabled { get; set; } = true;
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

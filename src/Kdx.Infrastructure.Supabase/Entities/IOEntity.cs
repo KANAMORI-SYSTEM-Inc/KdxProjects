@@ -60,12 +60,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("IsEnabled")]
         public bool IsEnabled { get; set; }
 
-        [Column("CreatedAt")]
-        public DateTime CreatedAt { get; set; }
-
-        [Column("UpdatedAt")]
-        public DateTime UpdatedAt { get; set; }
-
         public static IOEntity FromDto(IO dto) => new()
         {
             Address = dto.Address,
@@ -84,9 +78,7 @@ namespace Kdx.Infrastructure.Supabase.Entities
             LinkDevice = dto.LinkDevice,
             IOType = dto.IOType,
             IsInverted = dto.IsInverted,
-            IsEnabled = dto.IsEnabled,
-            CreatedAt = dto.CreatedAt,
-            UpdatedAt = dto.UpdatedAt
+            IsEnabled = dto.IsEnabled
         };
 
         public IO ToDto() => new()
@@ -107,9 +99,7 @@ namespace Kdx.Infrastructure.Supabase.Entities
             LinkDevice = this.LinkDevice,
             IOType = this.IOType,
             IsInverted = this.IsInverted,
-            IsEnabled = this.IsEnabled,
-            CreatedAt = this.CreatedAt,
-            UpdatedAt = this.UpdatedAt
+            IsEnabled = this.IsEnabled
         };
     }
 }

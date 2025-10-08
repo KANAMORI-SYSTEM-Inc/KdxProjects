@@ -746,11 +746,10 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             foreach (var io in iosToUpdate)
             {
                 var entity = IOEntity.FromDto(io);
+                // Upsertを使用して、新規レコードの挿入と既存レコードの更新の両方に対応
                 await _supabaseClient
                     .From<IOEntity>()
-                    .Where(i => i.Address == io.Address)
-                    .Where(i => i.PlcId == io.PlcId)
-                    .Update(entity);
+                    .Upsert(entity);
             }
 
             foreach (var history in histories)
