@@ -67,9 +67,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
         /// <summary>
         /// INSERT用のエンティティを作成（Idを除外して自動採番を有効化）
         /// </summary>
-        public static ProcessEntity FromDtoForInsert(Process dto) => new()
+        public static ProcessEntityForInsert FromDtoForInsert(Process dto) => new()
         {
-            // Idを除外して自動採番を有効化
             ProcessName = dto.ProcessName,
             CycleId = dto.CycleId,
             TestStart = dto.TestStart,
@@ -100,5 +99,48 @@ namespace Kdx.Infrastructure.Supabase.Entities
             Comment2 = this.Comment2,
             SortNumber = this.SortNumber
         };
+    }
+
+    /// <summary>
+    /// INSERT専用エンティティ（Idを含まない）
+    /// </summary>
+    [Table("Process")]
+    internal class ProcessEntityForInsert : BaseModel
+    {
+        [Column("ProcessName")]
+        public string? ProcessName { get; set; }
+
+        [Column("CycleId")]
+        public int? CycleId { get; set; }
+
+        [Column("TestStart")]
+        public string? TestStart { get; set; }
+
+        [Column("TestCondition")]
+        public string? TestCondition { get; set; }
+
+        [Column("TestMode")]
+        public string? TestMode { get; set; }
+
+        [Column("AutoMode")]
+        public string? AutoMode { get; set; }
+
+        [Column("AutoStart")]
+        public string? AutoStart { get; set; }
+
+        [Column("ProcessCategoryId")]
+        public int? ProcessCategoryId { get; set; }
+
+        [Column("ILStart")]
+        public string? ILStart { get; set; }
+
+        [Column("Comment1")]
+        public string? Comment1 { get; set; }
+
+        [Column("Comment2")]
+        public string? Comment2 { get; set; }
+
+        [Column("SortNumber")]
+        public int? SortNumber { get; set; }
     }
 }

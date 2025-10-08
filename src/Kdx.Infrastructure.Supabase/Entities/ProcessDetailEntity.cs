@@ -71,9 +71,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
         /// <summary>
         /// INSERT用のエンティティを作成（Idを除外して自動採番を有効化）
         /// </summary>
-        public static ProcessDetailEntity FromDtoForInsert(ProcessDetail dto) => new()
+        public static ProcessDetailEntityForInsert FromDtoForInsert(ProcessDetail dto) => new()
         {
-            // Idを除外して自動採番を有効化
             ProcessId = dto.ProcessId,
             OperationId = dto.OperationId,
             DetailName = dto.DetailName,
@@ -106,5 +105,51 @@ namespace Kdx.Infrastructure.Supabase.Entities
             ILStart = this.ILStart,
             StartTimerId = this.StartTimerId
         };
+    }
+
+    /// <summary>
+    /// INSERT専用エンティティ（Idを含まない）
+    /// </summary>
+    [Table("ProcessDetail")]
+    internal class ProcessDetailEntityForInsert : BaseModel
+    {
+        [Column("ProcessId")]
+        public int ProcessId { get; set; }
+
+        [Column("OperationId")]
+        public int? OperationId { get; set; }
+
+        [Column("DetailName")]
+        public string? DetailName { get; set; }
+
+        [Column("StartSensor")]
+        public string? StartSensor { get; set; }
+
+        [Column("CategoryId")]
+        public int? CategoryId { get; set; }
+
+        [Column("FinishSensor")]
+        public string? FinishSensor { get; set; }
+
+        [Column("BlockNumber")]
+        public int? BlockNumber { get; set; }
+
+        [Column("SkipMode")]
+        public string? SkipMode { get; set; }
+
+        [Column("CycleId")]
+        public int? CycleId { get; set; }
+
+        [Column("SortNumber")]
+        public int? SortNumber { get; set; }
+
+        [Column("Comment")]
+        public string? Comment { get; set; }
+
+        [Column("ILStart")]
+        public string? ILStart { get; set; }
+
+        [Column("StartTimerId")]
+        public int? StartTimerId { get; set; }
     }
 }
