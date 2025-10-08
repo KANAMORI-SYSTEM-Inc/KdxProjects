@@ -39,19 +39,19 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public int? PlaceId { get; set; }
 
         [Column("CYNameSub")]
-        public int? CYNameSub { get; set; }
+        public string? CYNameSub { get; set; }
 
         [Column("SensorId")]
-        public int? SensorId { get; set; }
+        public string? SensorId { get; set; }
 
         [Column("FlowType")]
         public string? FlowType { get; set; }
 
-        [Column("ProcessStartCycle")]
-        public int? GoSensorCount { get; set; }
+        [Column("GoSensorCount")]
+        public string? GoSensorCount { get; set; }
 
         [Column("BackSensorCount")]
-        public int? BackSensorCount { get; set; }
+        public string? BackSensorCount { get; set; }
 
         [Column("RetentionSensorGo")]
         public string? RetentionSensorGo { get; set; }
@@ -63,7 +63,7 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public int? SortNumber { get; set; }
 
         [Column("FlowCount")]
-        public int? FlowCount { get; set; }
+        public string? FlowCount { get; set; }
 
         [Column("FlowCYGo")]
         public string? FlowCYGo { get; set; }
@@ -183,19 +183,19 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public int? PlaceId { get; set; }
 
         [Column("CYNameSub")]
-        public int? CYNameSub { get; set; }
+        public string? CYNameSub { get; set; }
 
         [Column("SensorId")]
-        public int? SensorId { get; set; }
+        public string? SensorId { get; set; }
 
         [Column("FlowType")]
         public string? FlowType { get; set; }
 
-        [Column("ProcessStartCycle")]
-        public int? GoSensorCount { get; set; }
+        [Column("GoSensorCount")]
+        public string? GoSensorCount { get; set; }
 
         [Column("BackSensorCount")]
-        public int? BackSensorCount { get; set; }
+        public string? BackSensorCount { get; set; }
 
         [Column("RetentionSensorGo")]
         public string? RetentionSensorGo { get; set; }
@@ -207,7 +207,7 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public int? SortNumber { get; set; }
 
         [Column("FlowCount")]
-        public int? FlowCount { get; set; }
+        public string? FlowCount { get; set; }
 
         [Column("FlowCYGo")]
         public string? FlowCYGo { get; set; }

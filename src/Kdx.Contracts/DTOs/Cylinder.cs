@@ -13,14 +13,14 @@ namespace Kdx.Contracts.DTOs
         public int? DriveSubId { get; set; }
         public int? PlaceId { get; set; }
         public int? CYNameSub { get; set; }
-        public int? SensorId { get; set; }
+        public string? SensorId { get; set; }
         public string? FlowType { get; set; }
-        public int? GoSensorCount { get; set; }
-        public int? BackSensorCount { get; set; }
+        public string? GoSensorCount { get; set; }
+        public string? BackSensorCount { get; set; }
         public string? RetentionSensorGo { get; set; }
         public string? RetentionSensorBack { get; set; }
         public int? SortNumber { get; set; }
-        public int? FlowCount { get; set; }
+        public string? FlowCount { get; set; }
         public string? FlowCYGo { get; set; } = string.Empty;
         public string? FlowCYBack { get; set; } = string.Empty;
     }
