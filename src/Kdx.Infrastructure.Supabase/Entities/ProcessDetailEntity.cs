@@ -68,6 +68,27 @@ namespace Kdx.Infrastructure.Supabase.Entities
             StartTimerId = dto.StartTimerId
         };
 
+        /// <summary>
+        /// INSERT用のエンティティを作成（Idを除外して自動採番を有効化）
+        /// </summary>
+        public static ProcessDetailEntity FromDtoForInsert(ProcessDetail dto) => new()
+        {
+            // Idを除外して自動採番を有効化
+            ProcessId = dto.ProcessId,
+            OperationId = dto.OperationId,
+            DetailName = dto.DetailName,
+            StartSensor = dto.StartSensor,
+            CategoryId = dto.CategoryId,
+            FinishSensor = dto.FinishSensor,
+            BlockNumber = dto.BlockNumber,
+            SkipMode = dto.SkipMode,
+            CycleId = dto.CycleId,
+            SortNumber = dto.SortNumber,
+            Comment = dto.Comment,
+            ILStart = dto.ILStart,
+            StartTimerId = dto.StartTimerId
+        };
+
         public ProcessDetail ToDto() => new()
         {
             Id = this.Id,

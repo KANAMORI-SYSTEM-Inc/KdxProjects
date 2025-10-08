@@ -64,6 +64,26 @@ namespace Kdx.Infrastructure.Supabase.Entities
             SortNumber = dto.SortNumber
         };
 
+        /// <summary>
+        /// INSERT用のエンティティを作成（Idを除外して自動採番を有効化）
+        /// </summary>
+        public static ProcessEntity FromDtoForInsert(Process dto) => new()
+        {
+            // Idを除外して自動採番を有効化
+            ProcessName = dto.ProcessName,
+            CycleId = dto.CycleId,
+            TestStart = dto.TestStart,
+            TestCondition = dto.TestCondition,
+            TestMode = dto.TestMode,
+            AutoMode = dto.AutoMode,
+            AutoStart = dto.AutoStart,
+            ProcessCategoryId = dto.ProcessCategoryId,
+            ILStart = dto.ILStart,
+            Comment1 = dto.Comment1,
+            Comment2 = dto.Comment2,
+            SortNumber = dto.SortNumber
+        };
+
         public Process ToDto() => new()
         {
             Id = this.Id,

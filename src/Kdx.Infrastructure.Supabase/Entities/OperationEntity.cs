@@ -108,6 +108,37 @@ namespace Kdx.Infrastructure.Supabase.Entities
             Con = dto.Con
         };
 
+        /// <summary>
+        /// INSERT用のエンティティを作成（Idを除外して自動採番を有効化）
+        /// </summary>
+        public static OperationEntity FromDtoForInsert(Operation dto) => new()
+        {
+            // Idを除外して自動採番を有効化
+            OperationName = dto.OperationName,
+            CYId = dto.CYId,
+            CategoryId = dto.CategoryId,
+            Stay = dto.Stay,
+            GoBack = dto.GoBack,
+            Start = dto.Start,
+            Finish = dto.Finish,
+            Valve1 = dto.Valve1,
+            S1 = dto.S1,
+            S2 = dto.S2,
+            S3 = dto.S3,
+            S4 = dto.S4,
+            S5 = dto.S5,
+            SS1 = dto.SS1,
+            SS2 = dto.SS2,
+            SS3 = dto.SS3,
+            SS4 = dto.SS4,
+            PIL = dto.PIL,
+            SC = dto.SC,
+            FC = dto.FC,
+            CycleId = dto.CycleId,
+            SortNumber = dto.SortNumber,
+            Con = dto.Con
+        };
+
         public Operation ToDto() => new()
         {
             Id = this.Id,

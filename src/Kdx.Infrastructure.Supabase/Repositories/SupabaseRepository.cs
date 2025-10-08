@@ -165,7 +165,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddProcessAsync(Kdx.Contracts.DTOs.Process process)
         {
-            var entity = ProcessEntity.FromDto(process);
+            // INSERT時はIdを除外して自動採番を有効化
+            var entity = ProcessEntity.FromDtoForInsert(process);
             var response = await _supabaseClient
                 .From<ProcessEntity>()
                 .Insert(entity);
@@ -436,7 +437,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddOperationAsync(Operation operation)
         {
-            var entity = OperationEntity.FromDto(operation);
+            // INSERT時はIdを除外して自動採番を有効化
+            var entity = OperationEntity.FromDtoForInsert(operation);
             var response = await _supabaseClient
                 .From<OperationEntity>()
                 .Insert(entity);
@@ -471,7 +473,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddProcessDetailAsync(ProcessDetail processDetail)
         {
-            var entity = ProcessDetailEntity.FromDto(processDetail);
+            // INSERT時はIdを除外して自動採番を有効化
+            var entity = ProcessDetailEntity.FromDtoForInsert(processDetail);
             var response = await _supabaseClient
                 .From<ProcessDetailEntity>()
                 .Insert(entity);
