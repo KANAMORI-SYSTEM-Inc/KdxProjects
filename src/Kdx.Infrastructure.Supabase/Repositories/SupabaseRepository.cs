@@ -165,22 +165,24 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddProcessAsync(Kdx.Contracts.DTOs.Process process)
         {
-            // INSERT時はIdを除外して自動採番を有効化
-            var insertEntity = ProcessEntity.FromDtoForInsert(process);
+            // PostgreSQL関数を使用してINSERTし、新しいIDを取得
+            var result = await _supabaseClient.Rpc<long>("insert_process", new
+            {
+                process_name = process.ProcessName,
+                cycle_id = process.CycleId,
+                test_start = process.TestStart,
+                test_condition = process.TestCondition,
+                test_mode = process.TestMode,
+                auto_mode = process.AutoMode,
+                auto_start = process.AutoStart,
+                il_start = process.ILStart,
+                process_category_id = process.ProcessCategoryId,
+                comment1 = process.Comment1,
+                comment2 = process.Comment2,
+                sort_number = process.SortNumber
+            });
 
-            // INSERT実行（レスポンスはProcessEntityとして受け取る）
-            var response = await _supabaseClient
-                .From<ProcessEntityForInsert>()
-                .Insert(insertEntity);
-
-            // レスポンスが空の場合、最新のIDを取得
-            var latestProcess = await _supabaseClient
-                .From<ProcessEntity>()
-                .Order(x => x.Id, Postgrest.Constants.Ordering.Descending)
-                .Limit(1)
-                .Get();
-
-            return latestProcess.Models.FirstOrDefault()?.Id ?? 0;
+            return (int)result;
         }
 
         public async Task UpdateProcessAsync(Kdx.Contracts.DTOs.Process process)
@@ -447,22 +449,35 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddOperationAsync(Operation operation)
         {
-            // INSERT時はIdを除外して自動採番を有効化
-            var insertEntity = OperationEntity.FromDtoForInsert(operation);
+            // PostgreSQL関数を使用してINSERTし、新しいIDを取得
+            var result = await _supabaseClient.Rpc<long>("insert_operation", new
+            {
+                operation_name = operation.OperationName,
+                cy_id = operation.CYId,
+                category_id = operation.CategoryId,
+                stay = operation.Stay,
+                go_back = operation.GoBack,
+                start_val = operation.Start,
+                finish = operation.Finish,
+                valve1 = operation.Valve1,
+                s1 = operation.S1,
+                s2 = operation.S2,
+                s3 = operation.S3,
+                s4 = operation.S4,
+                s5 = operation.S5,
+                ss1 = operation.SS1,
+                ss2 = operation.SS2,
+                ss3 = operation.SS3,
+                ss4 = operation.SS4,
+                pil = operation.PIL,
+                sc = operation.SC,
+                fc = operation.FC,
+                cycle_id = operation.CycleId,
+                sort_number = operation.SortNumber,
+                con = operation.Con
+            });
 
-            // INSERT実行
-            var response = await _supabaseClient
-                .From<OperationEntityForInsert>()
-                .Insert(insertEntity);
-
-            // レスポンスが空の場合、最新のIDを取得
-            var latestOperation = await _supabaseClient
-                .From<OperationEntity>()
-                .Order(x => x.Id, Postgrest.Constants.Ordering.Descending)
-                .Limit(1)
-                .Get();
-
-            return latestOperation.Models.FirstOrDefault()?.Id ?? 0;
+            return (int)result;
         }
 
         public async Task UpdateOperationAsync(Operation operation)
@@ -493,22 +508,25 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddProcessDetailAsync(ProcessDetail processDetail)
         {
-            // INSERT時はIdを除外して自動採番を有効化
-            var insertEntity = ProcessDetailEntity.FromDtoForInsert(processDetail);
+            // PostgreSQL関数を使用してINSERTし、新しいIDを取得
+            var result = await _supabaseClient.Rpc<long>("insert_process_detail", new
+            {
+                process_id = processDetail.ProcessId,
+                operation_id = processDetail.OperationId,
+                detail_name = processDetail.DetailName,
+                start_sensor = processDetail.StartSensor,
+                category_id = processDetail.CategoryId,
+                finish_sensor = processDetail.FinishSensor,
+                block_number = processDetail.BlockNumber,
+                skip_mode = processDetail.SkipMode,
+                cycle_id = processDetail.CycleId,
+                sort_number = processDetail.SortNumber,
+                comment_text = processDetail.Comment,
+                il_start = processDetail.ILStart,
+                start_timer_id = processDetail.StartTimerId
+            });
 
-            // INSERT実行
-            var response = await _supabaseClient
-                .From<ProcessDetailEntityForInsert>()
-                .Insert(insertEntity);
-
-            // レスポンスが空の場合、最新のIDを取得
-            var latestDetail = await _supabaseClient
-                .From<ProcessDetailEntity>()
-                .Order(x => x.Id, Postgrest.Constants.Ordering.Descending)
-                .Limit(1)
-                .Get();
-
-            return latestDetail.Models.FirstOrDefault()?.Id ?? 0;
+            return (int)result;
         }
 
         public async Task DeleteProcessAsync(int id)
