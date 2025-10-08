@@ -299,11 +299,31 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddCylinderAsync(Cylinder cylinder)
         {
-            var entity = CylinderEntity.FromDto(cylinder);
-            var response = await _supabaseClient
-                .From<CylinderEntity>()
-                .Insert(entity);
-            return response.Models.FirstOrDefault()?.ToDto().Id ?? 0;
+            // PostgreSQL RPC関数を使用してINSERTを実行し、新しいIDを取得
+            var result = await _supabaseClient.Rpc<long>("insert_cylinder", new
+            {
+                plc_id = cylinder.PlcId,
+                puco = cylinder.PUCO,
+                cynum = cylinder.CYNum,
+                go = cylinder.Go,
+                back = cylinder.Back,
+                oil_num = cylinder.OilNum,
+                machine_name_id = cylinder.MachineNameId,
+                drive_sub_id = cylinder.DriveSubId,
+                place_id = cylinder.PlaceId,
+                cyname_sub = cylinder.CYNameSub,
+                sensor_id = cylinder.SensorId,
+                flow_type = cylinder.FlowType,
+                go_sensor_count = cylinder.GoSensorCount,
+                back_sensor_count = cylinder.BackSensorCount,
+                retention_sensor_go = cylinder.RetentionSensorGo,
+                retention_sensor_back = cylinder.RetentionSensorBack,
+                sort_number = cylinder.SortNumber,
+                flow_count = cylinder.FlowCount,
+                flow_cygo = cylinder.FlowCYGo,
+                flow_cyback = cylinder.FlowCYBack
+            });
+            return (int)result;
         }
 
         public async Task UpdateCylinderAsync(Cylinder cylinder)
