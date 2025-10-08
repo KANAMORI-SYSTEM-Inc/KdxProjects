@@ -12,7 +12,7 @@ namespace Kdx.Contracts.DTOs
         public int? MachineNameId { get; set; }
         public int? DriveSubId { get; set; }
         public int? PlaceId { get; set; }
-        public int? CYNameSub { get; set; }
+        public string? CYNameSub { get; set; }
         public string? SensorId { get; set; }
         public string? FlowType { get; set; }
         public string? GoSensorCount { get; set; }
