@@ -52,7 +52,7 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public string? LinkDevice { get; set; }
 
         [Column("IOType")]
-        public int IOType { get; set; }
+        public int? IOType { get; set; }
 
         [Column("IsInverted")]
         public bool IsInverted { get; set; }

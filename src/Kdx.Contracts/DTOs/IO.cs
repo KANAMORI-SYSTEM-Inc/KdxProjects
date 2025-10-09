@@ -31,7 +31,7 @@ namespace Kdx.Contracts.DTOs
 
         public string? LinkDevice { get; set; }
 
-        public int IOType { get; set; }
+        public int? IOType { get; set; }
 
         public bool IsInverted { get; set; }
 
