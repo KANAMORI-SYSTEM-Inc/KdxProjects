@@ -10,8 +10,6 @@ namespace Kdx.Contracts.DTOs
 
         public int? CategoryId { get; set; }
 
-        public string? Stay { get; set; }
-
         public string? GoBack { get; set; }
 
         public string? Start { get; set; }
@@ -38,11 +36,11 @@ namespace Kdx.Contracts.DTOs
 
         public string? SS4 { get; set; }
 
-        public int? PIL { get; set; }
+        public string? PIL { get; set; }
 
-        public int? SC { get; set; }
+        public string? SC { get; set; }
 
-        public int? FC { get; set; }
+        public string? FC { get; set; }
 
         public int? CycleId { get; set; }
 

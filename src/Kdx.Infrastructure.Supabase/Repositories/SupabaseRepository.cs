@@ -455,7 +455,6 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 operation_name = operation.OperationName,
                 cy_id = operation.CYId,
                 category_id = operation.CategoryId,
-                stay = operation.Stay,
                 go_back = operation.GoBack,
                 start_val = operation.Start,
                 finish = operation.Finish,

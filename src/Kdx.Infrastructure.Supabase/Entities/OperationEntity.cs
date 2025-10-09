@@ -20,9 +20,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("CategoryId")]
         public int? CategoryId { get; set; }
 
-        [Column("Stay")]
-        public string? Stay { get; set; }
-
         [Column("GoBack")]
         public string? GoBack { get; set; }
 
@@ -63,13 +60,13 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public string? SS4 { get; set; }
 
         [Column("PIL")]
-        public int? PIL { get; set; }
+        public string? PIL { get; set; }
 
         [Column("SC")]
-        public int? SC { get; set; }
+        public string? SC { get; set; }
 
         [Column("FC")]
-        public int? FC { get; set; }
+        public string? FC { get; set; }
 
         [Column("CycleId")]
         public int? CycleId { get; set; }
@@ -86,7 +83,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
             OperationName = dto.OperationName,
             CYId = dto.CYId,
             CategoryId = dto.CategoryId,
-            Stay = dto.Stay,
             GoBack = dto.GoBack,
             Start = dto.Start,
             Finish = dto.Finish,
@@ -116,7 +112,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
             OperationName = dto.OperationName,
             CYId = dto.CYId,
             CategoryId = dto.CategoryId,
-            Stay = dto.Stay,
             GoBack = dto.GoBack,
             Start = dto.Start,
             Finish = dto.Finish,
@@ -144,7 +139,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
             OperationName = this.OperationName,
             CYId = this.CYId,
             CategoryId = this.CategoryId,
-            Stay = this.Stay,
             GoBack = this.GoBack,
             Start = this.Start,
             Finish = this.Finish,
@@ -182,9 +176,6 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("CategoryId")]
         public int? CategoryId { get; set; }
 
-        [Column("Stay")]
-        public string? Stay { get; set; }
-
         [Column("GoBack")]
         public string? GoBack { get; set; }
 
@@ -225,13 +216,13 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public string? SS4 { get; set; }
 
         [Column("PIL")]
-        public int? PIL { get; set; }
+        public string? PIL { get; set; }
 
         [Column("SC")]
-        public int? SC { get; set; }
+        public string? SC { get; set; }
 
         [Column("FC")]
-        public int? FC { get; set; }
+        public string? FC { get; set; }
 
         [Column("CycleId")]
         public int? CycleId { get; set; }
