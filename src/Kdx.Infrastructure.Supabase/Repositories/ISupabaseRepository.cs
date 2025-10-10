@@ -161,6 +161,26 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <returns>シリンダーサイクル情報のリスト。</returns>
         Task<List<CylinderCycle>> GetCylinderCyclesByPlcIdAsync(int plcId);
 
+        /// <summary>
+        /// 指定されたシリンダーIDに紐づくシリンダーサイクル中間テーブル情報を取得します。
+        /// </summary>
+        /// <param name="cylinderId">シリンダーID。</param>
+        /// <returns>シリンダーサイクル情報のリスト。</returns>
+        Task<List<CylinderCycle>> GetCylinderCyclesByCylinderIdAsync(int cylinderId);
+
+        /// <summary>
+        /// シリンダーサイクルの関連を追加します。
+        /// </summary>
+        /// <param name="cylinderCycle">追加するシリンダーサイクル情報。</param>
+        Task AddCylinderCycleAsync(CylinderCycle cylinderCycle);
+
+        /// <summary>
+        /// シリンダーサイクルの関連を削除します。
+        /// </summary>
+        /// <param name="cylinderId">シリンダーID。</param>
+        /// <param name="cycleId">サイクルID。</param>
+        Task DeleteCylinderCycleAsync(int cylinderId, int cycleId);
+
         #endregion
 
         #region ControlBox

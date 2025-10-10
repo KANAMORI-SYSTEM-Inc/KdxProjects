@@ -109,6 +109,31 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             return response.Models.Select(e => e.ToDto()).ToList();
         }
 
+        public async Task<List<CylinderCycle>> GetCylinderCyclesByCylinderIdAsync(int cylinderId)
+        {
+            var response = await _supabaseClient
+                .From<CylinderCycleEntity>()
+                .Where(c => c.CylinderId == cylinderId)
+                .Get();
+            return response.Models.Select(e => e.ToDto()).ToList();
+        }
+
+        public async Task AddCylinderCycleAsync(CylinderCycle cylinderCycle)
+        {
+            var entity = CylinderCycleEntity.FromDto(cylinderCycle);
+            await _supabaseClient
+                .From<CylinderCycleEntity>()
+                .Insert(entity);
+        }
+
+        public async Task DeleteCylinderCycleAsync(int cylinderId, int cycleId)
+        {
+            await _supabaseClient
+                .From<CylinderCycleEntity>()
+                .Where(c => c.CylinderId == cylinderId && c.CycleId == cycleId)
+                .Delete();
+        }
+
         public async Task<List<ControlBox>> GetControlBoxesByPlcIdAsync(int plcId)
         {
             var response = await _supabaseClient
