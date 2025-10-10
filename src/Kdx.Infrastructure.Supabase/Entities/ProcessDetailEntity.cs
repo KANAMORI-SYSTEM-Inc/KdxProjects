@@ -7,8 +7,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
     [Table("ProcessDetail")]
     internal class ProcessDetailEntity : BaseModel
     {
-        [PrimaryKey("Id")]
-        [Column("Id")]
+        [PrimaryKey("ID")]
+        [Column("ID")]
         public int Id { get; set; }
 
         [Column("ProcessId")]
