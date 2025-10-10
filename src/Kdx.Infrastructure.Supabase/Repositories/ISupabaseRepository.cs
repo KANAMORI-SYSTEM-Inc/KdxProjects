@@ -907,6 +907,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <param name="finishProcessDetailId">終了先の工程詳細ID。</param>
         Task DeleteFinishesByProcessAndFinishAsync(int processDetailId, int finishProcessDetailId);
 
+        /// <summary>
+        /// 指定されたProcessDetailIdの全ての終了条件を削除します。
+        /// </summary>
+        /// <param name="processDetailId">工程詳細ID。</param>
+        Task DeleteFinishesByProcessDetailIdAsync(int processDetailId);
+
         #endregion
 
         #region ProcessStartCondition

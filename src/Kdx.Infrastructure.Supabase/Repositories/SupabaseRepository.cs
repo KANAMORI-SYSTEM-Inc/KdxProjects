@@ -1014,6 +1014,14 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 .Delete();
         }
 
+        public async Task DeleteFinishesByProcessDetailIdAsync(int processDetailId)
+        {
+            await _supabaseClient
+                .From<ProcessDetailFinishEntity>()
+                .Where(p => p.ProcessDetailId == processDetailId)
+                .Delete();
+        }
+
         #region ProcessStartCondition Methods
 
         public async Task<List<ProcessStartCondition>> GetProcessStartConditionsAsync(int cycleId)
