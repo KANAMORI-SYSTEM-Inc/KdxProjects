@@ -545,7 +545,7 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 skip_mode = processDetail.SkipMode,
                 cycle_id = processDetail.CycleId,
                 sort_number = processDetail.SortNumber,
-                comment_text = processDetail.Comment,
+                comment = processDetail.Comment,
                 il_start = processDetail.ILStart,
                 start_timer_id = processDetail.StartTimerId
             });
