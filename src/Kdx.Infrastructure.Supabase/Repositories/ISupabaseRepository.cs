@@ -851,6 +851,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <param name="toId">終点の工程詳細ID。</param>
         Task DeleteConnectionsByFromAndToAsync(int fromId, int toId);
 
+        /// <summary>
+        /// 指定されたFromProcessDetailIdの全ての接続を削除します。
+        /// </summary>
+        /// <param name="fromProcessDetailId">始点の工程詳細ID。</param>
+        Task DeleteConnectionsByFromIdAsync(int fromProcessDetailId);
+
         #endregion
 
         #region ProcessDetailFinish

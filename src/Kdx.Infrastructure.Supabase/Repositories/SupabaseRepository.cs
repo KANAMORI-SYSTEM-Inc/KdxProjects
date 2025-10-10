@@ -927,6 +927,14 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 .Delete();
         }
 
+        public async Task DeleteConnectionsByFromIdAsync(int fromProcessDetailId)
+        {
+            await _supabaseClient
+                .From<ProcessDetailConnectionEntity>()
+                .Where(p => p.FromProcessDetailId == fromProcessDetailId)
+                .Delete();
+        }
+
         public async Task<List<ProcessDetailFinish>> GetProcessDetailFinishesAsync(int cycleId)
         {
             // ProcessDetailFinish繝・・繝悶Ν縺ｫ縺ｯCycleId縺後↑縺・◆繧√・
