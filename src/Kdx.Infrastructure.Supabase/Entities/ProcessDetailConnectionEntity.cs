@@ -17,23 +17,18 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("ToProcessDetailId")]
         public int? ToProcessDetailId { get; set; }
 
-        [Column("ToProcessId")]
-        public int? ToProcessId { get; set; }
-
         public static ProcessDetailConnectionEntity FromDto(ProcessDetailConnection dto) => new()
         {
             Id = dto.Id,
             FromProcessDetailId = dto.FromProcessDetailId,
-            ToProcessDetailId = dto.ToProcessDetailId,
-            ToProcessId = dto.ToProcessId
+            ToProcessDetailId = dto.ToProcessDetailId
         };
 
         public ProcessDetailConnection ToDto() => new()
         {
             Id = this.Id,
             FromProcessDetailId = this.FromProcessDetailId,
-            ToProcessDetailId = this.ToProcessDetailId,
-            ToProcessId = this.ToProcessId
+            ToProcessDetailId = this.ToProcessDetailId
         };
     }
 }
