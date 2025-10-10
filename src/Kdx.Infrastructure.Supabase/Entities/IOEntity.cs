@@ -55,10 +55,10 @@ namespace Kdx.Infrastructure.Supabase.Entities
         public int? IOType { get; set; }
 
         [Column("IsInverted")]
-        public bool IsInverted { get; set; }
+        public bool? IsInverted { get; set; }
 
         [Column("IsEnabled")]
-        public bool IsEnabled { get; set; }
+        public bool? IsEnabled { get; set; }
 
         public static IOEntity FromDto(IO dto) => new()
         {
@@ -77,8 +77,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
             IONameNaked = dto.IONameNaked,
             LinkDevice = dto.LinkDevice,
             IOType = dto.IOType,
-            IsInverted = dto.IsInverted,
-            IsEnabled = dto.IsEnabled
+            IsInverted = dto.IsInverted ?? false,
+            IsEnabled = dto.IsEnabled ?? true
         };
 
         public IO ToDto() => new()

@@ -33,8 +33,8 @@ namespace Kdx.Contracts.DTOs
 
         public int? IOType { get; set; }
 
-        public bool IsInverted { get; set; }
+        public bool? IsInverted { get; set; }
 
-        public bool IsEnabled { get; set; } = true;
+        public bool? IsEnabled { get; set; }
     }
 }
