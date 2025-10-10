@@ -17,28 +17,18 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("FinishProcessDetailId")]
         public int? FinishProcessDetailId { get; set; }
 
-        [Column("FinishProcessId")]
-        public int? FinishProcessId { get; set; }
-
-        [Column("FinishSensor")]
-        public string? FinishSensor { get; set; }
-
         public static ProcessDetailFinishEntity FromDto(ProcessDetailFinish dto) => new()
         {
             Id = dto.Id,
             ProcessDetailId = dto.ProcessDetailId,
-            FinishProcessDetailId = dto.FinishProcessDetailId,
-            FinishProcessId = dto.FinishProcessId,
-            FinishSensor = dto.FinishSensor
+            FinishProcessDetailId = dto.FinishProcessDetailId
         };
 
         public ProcessDetailFinish ToDto() => new()
         {
             Id = this.Id,
             ProcessDetailId = this.ProcessDetailId,
-            FinishProcessDetailId = this.FinishProcessDetailId,
-            FinishProcessId = this.FinishProcessId,
-            FinishSensor = this.FinishSensor
+            FinishProcessDetailId = this.FinishProcessDetailId
         };
     }
 }

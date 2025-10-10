@@ -9,9 +9,5 @@ namespace Kdx.Contracts.DTOs
         public int ProcessDetailId { get; set; }
 
         public int? FinishProcessDetailId { get; set; }
-
-        public int? FinishProcessId { get; set; }
-
-        public string? FinishSensor { get; set; }
     }
 }
