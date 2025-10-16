@@ -841,8 +841,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <summary>
         /// 工程詳細接続情報を削除します。
         /// </summary>
-        /// <param name="id">削除する接続ID。</param>
-        Task DeleteProcessDetailConnectionAsync(int id);
+        /// <param name="fromProcessDetailId">始点の工程詳細ID。</param>
+        /// <param name="toProcessDetailId">終点の工程詳細ID。</param>
+        Task DeleteProcessDetailConnectionAsync(int fromProcessDetailId, int toProcessDetailId);
 
         /// <summary>
         /// 指定されたFromIdとToIdの組み合わせの接続情報を削除します。

@@ -7,28 +7,29 @@ namespace Kdx.Infrastructure.Supabase.Entities
     [Table("ProcessDetailConnection")]
     internal class ProcessDetailConnectionEntity : BaseModel
     {
-        [PrimaryKey("Id", shouldInsert: false)]
-        [Column("Id")]
-        public int Id { get; set; }
-
+        [PrimaryKey("FromProcessDetailId")]
         [Column("FromProcessDetailId")]
         public int FromProcessDetailId { get; set; }
 
+        [PrimaryKey("ToProcessDetailId")]
         [Column("ToProcessDetailId")]
         public int? ToProcessDetailId { get; set; }
 
+        [Column("CycleId")]
+        public int CycleId { get; set; }
+
         public static ProcessDetailConnectionEntity FromDto(ProcessDetailConnection dto) => new()
         {
-            Id = dto.Id,
             FromProcessDetailId = dto.FromProcessDetailId,
-            ToProcessDetailId = dto.ToProcessDetailId
+            ToProcessDetailId = dto.ToProcessDetailId,
+            CycleId = dto.CycleId ?? 0  // CycleIdが必須になったため、nullの場合は0をデフォルト値とする
         };
 
         public ProcessDetailConnection ToDto() => new()
         {
-            Id = this.Id,
             FromProcessDetailId = this.FromProcessDetailId,
-            ToProcessDetailId = this.ToProcessDetailId
+            ToProcessDetailId = this.ToProcessDetailId,
+            CycleId = this.CycleId
         };
     }
 }

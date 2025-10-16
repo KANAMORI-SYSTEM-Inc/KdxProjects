@@ -908,9 +908,28 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             try
             {
                 System.Diagnostics.Debug.WriteLine("[SupabaseRepository] AddProcessDetailConnectionAsync 開始");
-                System.Diagnostics.Debug.WriteLine($"  Id: {connection.Id}");
                 System.Diagnostics.Debug.WriteLine($"  FromProcessDetailId: {connection.FromProcessDetailId}");
                 System.Diagnostics.Debug.WriteLine($"  ToProcessDetailId: {connection.ToProcessDetailId}");
+                System.Diagnostics.Debug.WriteLine($"  CycleId: {connection.CycleId}");
+
+                // CycleIdがnullの場合、FromProcessDetailから取得
+                if (!connection.CycleId.HasValue)
+                {
+                    var processDetail = await _supabaseClient
+                        .From<ProcessDetailEntity>()
+                        .Where(p => p.Id == connection.FromProcessDetailId)
+                        .Single();
+
+                    if (processDetail != null)
+                    {
+                        connection.CycleId = processDetail.CycleId;
+                        System.Diagnostics.Debug.WriteLine($"  CycleIdをProcessDetailから取得: {connection.CycleId}");
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"ProcessDetail (ID={connection.FromProcessDetailId}) が見つかりません。");
+                    }
+                }
 
                 // 既存の接続を確認（デバッグ用）
                 var existingConnections = await _supabaseClient
@@ -924,7 +943,7 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                     System.Diagnostics.Debug.WriteLine($"  ⚠️ 警告: 既に同じ接続がデータベースに存在します！");
                     foreach (var existing in existingConnections.Models)
                     {
-                        System.Diagnostics.Debug.WriteLine($"    既存ID: {existing.Id}, From: {existing.FromProcessDetailId}, To: {existing.ToProcessDetailId}");
+                        System.Diagnostics.Debug.WriteLine($"    既存: From={existing.FromProcessDetailId}, To={existing.ToProcessDetailId}, CycleId={existing.CycleId}");
                     }
                     throw new InvalidOperationException(
                         $"同じ接続が既にデータベースに存在します。FromProcessDetailId={connection.FromProcessDetailId}, ToProcessDetailId={connection.ToProcessDetailId}");
@@ -945,11 +964,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             }
         }
 
-        public async Task DeleteProcessDetailConnectionAsync(int id)
+        public async Task DeleteProcessDetailConnectionAsync(int fromProcessDetailId, int toProcessDetailId)
         {
             await _supabaseClient
                 .From<ProcessDetailConnectionEntity>()
-                .Where(p => p.Id == id)
+                .Where(p => p.FromProcessDetailId == fromProcessDetailId)
+                .Where(p => p.ToProcessDetailId == toProcessDetailId)
                 .Delete();
         }
 
@@ -978,7 +998,7 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 System.Diagnostics.Debug.WriteLine($"  削除対象の接続数: {existingConnections.Models.Count()}");
                 foreach (var conn in existingConnections.Models)
                 {
-                    System.Diagnostics.Debug.WriteLine($"    削除予定: ID={conn.Id}, From={conn.FromProcessDetailId}, To={conn.ToProcessDetailId}");
+                    System.Diagnostics.Debug.WriteLine($"    削除予定: CycleId={conn.CycleId}, From={conn.FromProcessDetailId}, To={conn.ToProcessDetailId}");
                 }
 
                 // 削除実行

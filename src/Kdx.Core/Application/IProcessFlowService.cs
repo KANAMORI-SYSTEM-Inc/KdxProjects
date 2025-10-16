@@ -51,8 +51,9 @@ namespace Kdx.Core.Application
         /// <summary>
         /// プロセス詳細間の接続を削除
         /// </summary>
-        /// <param name="connectionId">接続ID</param>
-        void DeleteConnection(int connectionId);
+        /// <param name="fromProcessDetailId">接続元のプロセス詳細ID</param>
+        /// <param name="toProcessDetailId">接続先のプロセス詳細ID</param>
+        void DeleteConnection(int fromProcessDetailId, int toProcessDetailId);
 
         /// <summary>
         /// プロセス詳細の終了条件を追加

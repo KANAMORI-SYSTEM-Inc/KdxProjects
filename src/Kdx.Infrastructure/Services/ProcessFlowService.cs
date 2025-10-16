@@ -55,12 +55,14 @@ namespace Kdx.Infrastructure.Services
             Task.Run(async () => await _repository.AddProcessDetailConnectionAsync(connection)).GetAwaiter().GetResult();
         }
 
-        public void DeleteConnection(int connectionId)
+        public void DeleteConnection(int fromProcessDetailId, int toProcessDetailId)
         {
-            if (connectionId <= 0)
-                throw new ArgumentException("無効な接続IDです", nameof(connectionId));
+            if (fromProcessDetailId <= 0)
+                throw new ArgumentException("無効な接続元IDです", nameof(fromProcessDetailId));
+            if (toProcessDetailId <= 0)
+                throw new ArgumentException("無効な接続先IDです", nameof(toProcessDetailId));
 
-            Task.Run(async () => await _repository.DeleteProcessDetailConnectionAsync(connectionId)).GetAwaiter().GetResult();
+            Task.Run(async () => await _repository.DeleteProcessDetailConnectionAsync(fromProcessDetailId, toProcessDetailId)).GetAwaiter().GetResult();
         }
 
         public void AddFinishCondition(ProcessDetailFinish finish)
