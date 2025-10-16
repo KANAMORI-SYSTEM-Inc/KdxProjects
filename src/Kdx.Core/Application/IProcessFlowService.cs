@@ -64,8 +64,9 @@ namespace Kdx.Core.Application
         /// <summary>
         /// プロセス詳細の終了条件を削除
         /// </summary>
-        /// <param name="finishId">終了条件ID</param>
-        void DeleteFinishCondition(int finishId);
+        /// <param name="processDetailId">工程詳細ID</param>
+        /// <param name="finishProcessDetailId">終了先の工程詳細ID</param>
+        void DeleteFinishCondition(int processDetailId, int finishProcessDetailId);
 
         /// <summary>
         /// 接続が有効かどうかを検証

@@ -7,28 +7,29 @@ namespace Kdx.Infrastructure.Supabase.Entities
     [Table("ProcessDetailFinish")]
     internal class ProcessDetailFinishEntity : BaseModel
     {
-        [PrimaryKey("Id", shouldInsert: false)]
-        [Column("Id")]
-        public int Id { get; set; }
-
+        [PrimaryKey("ProcessDetailId")]
         [Column("ProcessDetailId")]
         public int ProcessDetailId { get; set; }
 
+        [PrimaryKey("FinishProcessDetailId")]
         [Column("FinishProcessDetailId")]
-        public int? FinishProcessDetailId { get; set; }
+        public int FinishProcessDetailId { get; set; }
+
+        [Column("CycleId")]
+        public int CycleId { get; set; }
 
         public static ProcessDetailFinishEntity FromDto(ProcessDetailFinish dto) => new()
         {
-            Id = dto.Id,
             ProcessDetailId = dto.ProcessDetailId,
-            FinishProcessDetailId = dto.FinishProcessDetailId
+            FinishProcessDetailId = dto.FinishProcessDetailId,
+            CycleId = dto.CycleId
         };
 
         public ProcessDetailFinish ToDto() => new()
         {
-            Id = this.Id,
             ProcessDetailId = this.ProcessDetailId,
-            FinishProcessDetailId = this.FinishProcessDetailId
+            FinishProcessDetailId = this.FinishProcessDetailId,
+            CycleId = this.CycleId
         };
     }
 }

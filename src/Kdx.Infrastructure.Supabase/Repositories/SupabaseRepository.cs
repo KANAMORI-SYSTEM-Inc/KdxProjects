@@ -1112,11 +1112,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 .Insert(ProcessDetailFinishEntity.FromDto(finish));
         }
 
-        public async Task DeleteProcessDetailFinishAsync(int id)
+        public async Task DeleteProcessDetailFinishAsync(int processDetailId, int finishProcessDetailId)
         {
             await _supabaseClient
                 .From<ProcessDetailFinishEntity>()
-                .Where(p => p.Id == id)
+                .Where(p => p.ProcessDetailId == processDetailId)
+                .Where(p => p.FinishProcessDetailId == finishProcessDetailId)
                 .Delete();
         }
 

@@ -73,12 +73,14 @@ namespace Kdx.Infrastructure.Services
             Task.Run(async () => await _repository.AddProcessDetailFinishAsync(finish)).GetAwaiter().GetResult();
         }
 
-        public void DeleteFinishCondition(int finishId)
+        public void DeleteFinishCondition(int processDetailId, int finishProcessDetailId)
         {
-            if (finishId <= 0)
-                throw new ArgumentException("無効な終了条件IDです", nameof(finishId));
+            if (processDetailId <= 0)
+                throw new ArgumentException("無効な工程詳細IDです", nameof(processDetailId));
+            if (finishProcessDetailId <= 0)
+                throw new ArgumentException("無効な終了先工程詳細IDです", nameof(finishProcessDetailId));
 
-            Task.Run(async () => await _repository.DeleteProcessDetailFinishAsync(finishId)).GetAwaiter().GetResult();
+            Task.Run(async () => await _repository.DeleteProcessDetailFinishAsync(processDetailId, finishProcessDetailId)).GetAwaiter().GetResult();
         }
 
         public bool ValidateConnection(int fromId, int toId)

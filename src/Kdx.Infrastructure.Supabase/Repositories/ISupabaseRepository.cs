@@ -904,8 +904,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <summary>
         /// 工程詳細終了情報を削除します。
         /// </summary>
-        /// <param name="id">削除する終了情報ID。</param>
-        Task DeleteProcessDetailFinishAsync(int id);
+        /// <param name="processDetailId">工程詳細ID。</param>
+        /// <param name="finishProcessDetailId">終了先の工程詳細ID。</param>
+        Task DeleteProcessDetailFinishAsync(int processDetailId, int finishProcessDetailId);
 
         /// <summary>
         /// 指定された工程詳細IDと終了先工程詳細IDの組み合わせの終了情報を削除します。
