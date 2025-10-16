@@ -1016,6 +1016,40 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             }
         }
 
+        public async Task DeleteConnectionsByToIdAsync(int toProcessDetailId)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"[SupabaseRepository] DeleteConnectionsByToIdAsync 開始");
+                System.Diagnostics.Debug.WriteLine($"  ToProcessDetailId: {toProcessDetailId}");
+
+                // 削除前に既存の接続を確認
+                var existingConnections = await _supabaseClient
+                    .From<ProcessDetailConnectionEntity>()
+                    .Where(p => p.ToProcessDetailId == toProcessDetailId)
+                    .Get();
+
+                System.Diagnostics.Debug.WriteLine($"  削除対象の接続数: {existingConnections.Models.Count()}");
+                foreach (var conn in existingConnections.Models)
+                {
+                    System.Diagnostics.Debug.WriteLine($"    削除予定: CycleId={conn.CycleId}, From={conn.FromProcessDetailId}, To={conn.ToProcessDetailId}");
+                }
+
+                // 削除実行
+                await _supabaseClient
+                    .From<ProcessDetailConnectionEntity>()
+                    .Where(p => p.ToProcessDetailId == toProcessDetailId)
+                    .Delete();
+
+                System.Diagnostics.Debug.WriteLine("  ✓ 削除完了");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SupabaseRepository] 削除エラー: {ex.Message}");
+                throw;
+            }
+        }
+
         public async Task<List<ProcessDetailFinish>> GetProcessDetailFinishesAsync(int cycleId)
         {
             // ProcessDetailFinish繝・・繝悶Ν縺ｫ縺ｯCycleId縺後↑縺・◆繧√・
