@@ -905,9 +905,44 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task AddProcessDetailConnectionAsync(ProcessDetailConnection connection)
         {
-            await _supabaseClient
-                .From<ProcessDetailConnectionEntity>()
-                .Insert(ProcessDetailConnectionEntity.FromDto(connection));
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("[SupabaseRepository] AddProcessDetailConnectionAsync 開始");
+                System.Diagnostics.Debug.WriteLine($"  Id: {connection.Id}");
+                System.Diagnostics.Debug.WriteLine($"  FromProcessDetailId: {connection.FromProcessDetailId}");
+                System.Diagnostics.Debug.WriteLine($"  ToProcessDetailId: {connection.ToProcessDetailId}");
+
+                // 既存の接続を確認（デバッグ用）
+                var existingConnections = await _supabaseClient
+                    .From<ProcessDetailConnectionEntity>()
+                    .Where(c => c.FromProcessDetailId == connection.FromProcessDetailId)
+                    .Where(c => c.ToProcessDetailId == connection.ToProcessDetailId)
+                    .Get();
+
+                if (existingConnections.Models.Any())
+                {
+                    System.Diagnostics.Debug.WriteLine($"  ⚠️ 警告: 既に同じ接続がデータベースに存在します！");
+                    foreach (var existing in existingConnections.Models)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"    既存ID: {existing.Id}, From: {existing.FromProcessDetailId}, To: {existing.ToProcessDetailId}");
+                    }
+                    throw new InvalidOperationException(
+                        $"同じ接続が既にデータベースに存在します。FromProcessDetailId={connection.FromProcessDetailId}, ToProcessDetailId={connection.ToProcessDetailId}");
+                }
+
+                var entity = ProcessDetailConnectionEntity.FromDto(connection);
+                await _supabaseClient
+                    .From<ProcessDetailConnectionEntity>()
+                    .Insert(entity);
+
+                System.Diagnostics.Debug.WriteLine("  ✓ 保存成功");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SupabaseRepository] エラー: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"  詳細: {ex}");
+                throw;
+            }
         }
 
         public async Task DeleteProcessDetailConnectionAsync(int id)
@@ -929,10 +964,36 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task DeleteConnectionsByFromIdAsync(int fromProcessDetailId)
         {
-            await _supabaseClient
-                .From<ProcessDetailConnectionEntity>()
-                .Where(p => p.FromProcessDetailId == fromProcessDetailId)
-                .Delete();
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"[SupabaseRepository] DeleteConnectionsByFromIdAsync 開始");
+                System.Diagnostics.Debug.WriteLine($"  FromProcessDetailId: {fromProcessDetailId}");
+
+                // 削除前に既存の接続を確認
+                var existingConnections = await _supabaseClient
+                    .From<ProcessDetailConnectionEntity>()
+                    .Where(p => p.FromProcessDetailId == fromProcessDetailId)
+                    .Get();
+
+                System.Diagnostics.Debug.WriteLine($"  削除対象の接続数: {existingConnections.Models.Count()}");
+                foreach (var conn in existingConnections.Models)
+                {
+                    System.Diagnostics.Debug.WriteLine($"    削除予定: ID={conn.Id}, From={conn.FromProcessDetailId}, To={conn.ToProcessDetailId}");
+                }
+
+                // 削除実行
+                await _supabaseClient
+                    .From<ProcessDetailConnectionEntity>()
+                    .Where(p => p.FromProcessDetailId == fromProcessDetailId)
+                    .Delete();
+
+                System.Diagnostics.Debug.WriteLine("  ✓ 削除完了");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SupabaseRepository] 削除エラー: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<List<ProcessDetailFinish>> GetProcessDetailFinishesAsync(int cycleId)
