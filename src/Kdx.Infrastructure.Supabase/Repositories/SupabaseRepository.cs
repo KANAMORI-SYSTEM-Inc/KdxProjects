@@ -359,11 +359,18 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<int> AddTimerAsync(Timer timer)
         {
-            var entity = TimerEntity.FromDto(timer);
-            var response = await _supabaseClient
-                .From<TimerEntity>()
-                .Insert(entity);
-            return response.Models.FirstOrDefault()?.ToDto().ID ?? 0;
+            // PostgreSQL関数を使用してINSERTし、新しいIDを取得
+            var result = await _supabaseClient.Rpc<long>("insert_timer", new
+            {
+                cycle_id_param = timer.CycleId,
+                timer_category_id_param = timer.TimerCategoryId,
+                timer_num_param = timer.TimerNum,
+                timer_name_param = timer.TimerName,
+                mnemonic_id_param = timer.MnemonicId,
+                example_param = timer.Example
+            });
+
+            return (int)result;
         }
 
         public async Task UpdateTimerAsync(Timer timer)
