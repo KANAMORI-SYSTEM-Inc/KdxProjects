@@ -332,10 +332,32 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         public async Task<List<Timer>> GetTimersAsync()
         {
-            var response = await _supabaseClient
-                .From<TimerEntity>()
-                .Get();
-            return response.Models.Select(e => e.ToDto()).ToList();
+            // ページング処理を使用して全タイマーを取得（1000件制限を回避）
+            var allTimers = new List<Timer>();
+            const int pageSize = 1000;
+            int offset = 0;
+            bool hasMore = true;
+
+            while (hasMore)
+            {
+                var response = await _supabaseClient
+                    .From<TimerEntity>()
+                    .Range(offset, offset + pageSize - 1)
+                    .Get();
+
+                if (response?.Models != null && response.Models.Any())
+                {
+                    allTimers.AddRange(response.Models.Select(e => e.ToDto()));
+                    offset += pageSize;
+                    hasMore = response.Models.Count == pageSize;
+                }
+                else
+                {
+                    hasMore = false;
+                }
+            }
+
+            return allTimers;
         }
 
         public async Task<List<Timer>> GetTimersByCycleIdAsync(int cycleId)
