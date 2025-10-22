@@ -22,6 +22,8 @@ namespace Kdx.Contracts.DTOs.MnemonicCommon
         public const string ANDN = "\"AND<>\"";
 
         public const string LDF = "\"LDF\"";
+        public const string ORF = "\"ORF\"";
+
         public const string LDDE = "\"LDD=\"";
         public const string ANDDU = "\"ANDD<\"";
         public const string ANDDL = "\"ANDD>\"";

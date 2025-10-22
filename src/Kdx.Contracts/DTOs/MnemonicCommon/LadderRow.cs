@@ -8,6 +8,7 @@ namespace Kdx.Contracts.DTOs.MnemonicCommon
         public static LadderCsvRow AddLDP(string address) => CreateRow(Command.LDP, address);
         public static LadderCsvRow AddORP(string address) => CreateRow(Command.ORP, address);
         public static LadderCsvRow AddLDF(string address) => CreateRow(Command.LDF, address);
+        public static LadderCsvRow AddORF(string address) => CreateRow(Command.ORF, address);
         public static LadderCsvRow AddAND(string address) => CreateRow(Command.AND, address);
         public static LadderCsvRow AddANI(string address) => CreateRow(Command.ANI, address);
         public static LadderCsvRow AddOUT(string address) => CreateRow(Command.OUT, address);
