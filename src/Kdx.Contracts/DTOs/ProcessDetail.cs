@@ -16,5 +16,6 @@ namespace Kdx.Contracts.DTOs
         public string? Comment { get; set; }
         public string? ILStart { get; set; }
         public int? StartTimerId { get; set; }
+        public bool? IsResetAfter { get; set; }
     }
 }
