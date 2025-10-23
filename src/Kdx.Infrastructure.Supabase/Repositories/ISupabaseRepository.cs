@@ -1421,5 +1421,40 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         Task UpsertInterlockPrecondition2ListAsync(List<InterlockPrecondition2> preconditions);
 
         #endregion
+
+        #region MemoryProfile
+
+        /// <summary>
+        /// 全てのメモリプロファイル情報を取得します。
+        /// </summary>
+        /// <returns>メモリプロファイル情報のリスト。</returns>
+        Task<List<MemoryProfile>> GetMemoryProfilesAsync();
+
+        /// <summary>
+        /// 指定されたサイクルIDのメモリプロファイル情報を取得します。
+        /// </summary>
+        /// <param name="cycleId">サイクルID（主キー）。</param>
+        /// <returns>メモリプロファイル情報。見つからない場合はnull。</returns>
+        Task<MemoryProfile?> GetMemoryProfileByCycleIdAsync(int cycleId);
+
+        /// <summary>
+        /// 新しいメモリプロファイル情報を追加します。
+        /// </summary>
+        /// <param name="profile">追加するメモリプロファイル情報。</param>
+        Task AddMemoryProfileAsync(MemoryProfile profile);
+
+        /// <summary>
+        /// メモリプロファイル情報を更新します。
+        /// </summary>
+        /// <param name="profile">更新するメモリプロファイル情報。</param>
+        Task UpdateMemoryProfileAsync(MemoryProfile profile);
+
+        /// <summary>
+        /// メモリプロファイル情報を削除します。
+        /// </summary>
+        /// <param name="cycleId">削除するメモリプロファイルのサイクルID（主キー）。</param>
+        Task DeleteMemoryProfileAsync(int cycleId);
+
+        #endregion
     }
 }

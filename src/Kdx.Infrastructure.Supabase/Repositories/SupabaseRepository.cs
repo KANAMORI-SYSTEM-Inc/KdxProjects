@@ -2067,6 +2067,53 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
         #endregion
 
+        #region MemoryProfile
+
+        public async Task<List<MemoryProfile>> GetMemoryProfilesAsync()
+        {
+            var response = await _supabaseClient
+                .From<MemoryProfileEntity>()
+                .Get();
+            return response.Models.Select(e => e.ToDto()).ToList();
+        }
+
+        public async Task<MemoryProfile?> GetMemoryProfileByCycleIdAsync(int cycleId)
+        {
+            var response = await _supabaseClient
+                .From<MemoryProfileEntity>()
+                .Where(m => m.CycleId == cycleId)
+                .Single();
+            return response?.ToDto();
+        }
+
+        public async Task AddMemoryProfileAsync(MemoryProfile profile)
+        {
+            var entity = MemoryProfileEntity.FromDtoForInsert(profile);
+            await _supabaseClient
+                .From<MemoryProfileEntityForInsert>()
+                .Insert(entity);
+        }
+
+        public async Task UpdateMemoryProfileAsync(MemoryProfile profile)
+        {
+            var entity = MemoryProfileEntity.FromDto(profile);
+            entity.UpdatedAt = DateTime.UtcNow;
+            await _supabaseClient
+                .From<MemoryProfileEntity>()
+                .Where(m => m.CycleId == profile.CycleId)
+                .Update(entity);
+        }
+
+        public async Task DeleteMemoryProfileAsync(int cycleId)
+        {
+            await _supabaseClient
+                .From<MemoryProfileEntity>()
+                .Where(m => m.CycleId == cycleId)
+                .Delete();
+        }
+
+        #endregion
+
     }
 }
 
