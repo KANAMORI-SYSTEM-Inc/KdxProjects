@@ -50,6 +50,9 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("StartTimerId")]
         public int? StartTimerId { get; set; }
 
+        [Column("IsResetAfter")]
+        public bool? IsResetAfter { get; set; }
+
         public static ProcessDetailEntity FromDto(ProcessDetail dto) => new()
         {
             Id = dto.Id,
@@ -65,7 +68,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
             SortNumber = dto.SortNumber,
             Comment = dto.Comment,
             ILStart = dto.ILStart,
-            StartTimerId = dto.StartTimerId
+            StartTimerId = dto.StartTimerId,
+            IsResetAfter = dto.IsResetAfter
         };
 
         /// <summary>
@@ -85,7 +89,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
             SortNumber = dto.SortNumber,
             Comment = dto.Comment,
             ILStart = dto.ILStart,
-            StartTimerId = dto.StartTimerId
+            StartTimerId = dto.StartTimerId,
+            IsResetAfter = dto.IsResetAfter
         };
 
         public ProcessDetail ToDto() => new()
@@ -103,7 +108,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
             SortNumber = this.SortNumber,
             Comment = this.Comment,
             ILStart = this.ILStart,
-            StartTimerId = this.StartTimerId
+            StartTimerId = this.StartTimerId,
+            IsResetAfter = this.IsResetAfter
         };
     }
 
@@ -151,5 +157,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
 
         [Column("StartTimerId")]
         public int? StartTimerId { get; set; }
+
+        [Column("IsResetAfter")]
+        public bool? IsResetAfter { get; set; }
     }
 }
