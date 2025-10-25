@@ -693,6 +693,14 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         Task<List<MnemonicTimerDevice>> GetMnemonicTimerDevicesByClcleIdAsync(int plcId, int cycleId);
 
         /// <summary>
+        /// 指定されたPLC IDとサイクルIDに紐づくMnemonicTimerDevice情報を取得します。
+        /// </summary>
+        /// <param name="plcId">PLC ID。</param>
+        /// <param name="cycleId">サイクルID。</param>
+        /// <returns>MnemonicTimerDevice情報のリスト。</returns>
+        Task<List<MnemonicTimerDevice>> GetMnemonicTimerDevicesByPlcIdAsync(int plcId);
+
+        /// <summary>
         /// 指定されたPLC ID、サイクルID、ニーモニックIDに紐づくMnemonicTimerDevice情報を取得します。
         /// </summary>
         /// <param name="plcId">PLC ID。</param>

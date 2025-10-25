@@ -657,6 +657,15 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             return response.Models.Select(e => e.ToDto()).ToList();
         }
 
+        public async Task<List<MnemonicTimerDevice>> GetMnemonicTimerDevicesByPlcIdAsync(int plcId)
+        {
+            var response = await _supabaseClient
+                .From<MnemonicTimerDeviceEntity>()
+                .Where(m => m.PlcId == plcId)
+                .Get();
+            return response.Models.Select(e => e.ToDto()).ToList();
+        }
+
         public async Task<List<MnemonicTimerDevice>> GetMnemonicTimerDevicesByCycleAndMnemonicIdAsync(int plcId, int cycleId, int mnemonicId)
         {
             var response = await _supabaseClient
