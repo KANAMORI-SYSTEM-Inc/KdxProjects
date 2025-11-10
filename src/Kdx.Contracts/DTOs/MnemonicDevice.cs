@@ -16,6 +16,8 @@ namespace Kdx.Contracts.DTOs
 
         public int PlcId { get; set; }
 
+        public int? CycleId { get; set; }
+
         public string? Comment1 { get; set; }
 
         public string? Comment2 { get; set; }

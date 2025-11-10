@@ -9,5 +9,7 @@ namespace Kdx.Contracts.DTOs
         public string Device { get; set; } = "D0";
 
         public int PlcId { get; set; }
+
+        public int? CycleId { get; set; }
     }
 }
