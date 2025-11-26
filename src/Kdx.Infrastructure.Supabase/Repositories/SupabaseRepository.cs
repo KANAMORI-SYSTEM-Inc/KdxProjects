@@ -1228,7 +1228,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<ProcessStartConditionEntity>()
-                .Where(p => p.Id == condition.Id)
+                .Where(p => p.ProcessId == condition.ProcessId)
+                .Where(p => p.StartProcessDetailId == condition.StartProcessDetailId)
                 .Update(ProcessStartConditionEntity.FromDto(condition));
         }
 
@@ -1302,7 +1303,8 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         {
             await _supabaseClient
                 .From<ProcessFinishConditionEntity>()
-                .Where(p => p.Id == condition.Id)
+                .Where(p => p.ProcessId == condition.ProcessId)
+                .Where(p => p.FinishProcessDetailId == condition.FinishProcessDetailId)
                 .Update(ProcessFinishConditionEntity.FromDto(condition));
         }
 
