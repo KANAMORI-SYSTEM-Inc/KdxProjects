@@ -978,10 +978,10 @@ namespace Kdx.Infrastructure.Supabase.Repositories
 
                 if (existingConnections.Models.Any())
                 {
-                    System.Diagnostics.Debug.WriteLine($"  ⚠️ 警告: 既に同じ接続がデータベースに存在します！");
+                    Debug.WriteLine($"  ⚠️ 警告: 既に同じ接続がデータベースに存在します！");
                     foreach (var existing in existingConnections.Models)
                     {
-                        System.Diagnostics.Debug.WriteLine($"    既存: From={existing.FromProcessDetailId}, To={existing.ToProcessDetailId}, CycleId={existing.CycleId}");
+                        Debug.WriteLine($"    既存: From={existing.FromProcessDetailId}, To={existing.ToProcessDetailId}, CycleId={existing.CycleId}");
                     }
                     throw new InvalidOperationException(
                         $"同じ接続が既にデータベースに存在します。FromProcessDetailId={connection.FromProcessDetailId}, ToProcessDetailId={connection.ToProcessDetailId}");
@@ -1224,6 +1224,14 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 .Insert(ProcessStartConditionEntity.FromDto(condition));
         }
 
+        public async Task UpdateProcessStartConditionAsync(ProcessStartCondition condition)
+        {
+            await _supabaseClient
+                .From<ProcessStartConditionEntity>()
+                .Where(p => p.Id == condition.Id)
+                .Update(ProcessStartConditionEntity.FromDto(condition));
+        }
+
         public async Task DeleteProcessStartConditionAsync(int id)
         {
             await _supabaseClient
@@ -1287,6 +1295,14 @@ namespace Kdx.Infrastructure.Supabase.Repositories
             await _supabaseClient
                 .From<ProcessFinishConditionEntity>()
                 .Insert(ProcessFinishConditionEntity.FromDto(condition));
+        }
+
+        public async Task UpdateProcessFinishConditionAsync(ProcessFinishCondition condition)
+        {
+            await _supabaseClient
+                .From<ProcessFinishConditionEntity>()
+                .Where(p => p.Id == condition.Id)
+                .Update(ProcessFinishConditionEntity.FromDto(condition));
         }
 
         public async Task DeleteProcessFinishConditionAsync(int id)

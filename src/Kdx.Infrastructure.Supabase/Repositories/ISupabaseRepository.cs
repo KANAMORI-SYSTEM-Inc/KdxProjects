@@ -954,6 +954,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         Task AddProcessStartConditionAsync(ProcessStartCondition condition);
 
         /// <summary>
+        /// 工程開始条件を更新します。
+        /// </summary>
+        /// <param name="condition">更新する開始条件。</param>
+        Task UpdateProcessStartConditionAsync(ProcessStartCondition condition);
+
+        /// <summary>
         /// 工程開始条件を削除します。
         /// </summary>
         /// <param name="id">削除する工程開始条件ID。</param>
@@ -988,6 +994,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// </summary>
         /// <param name="condition">追加する終了条件。</param>
         Task AddProcessFinishConditionAsync(ProcessFinishCondition condition);
+
+        /// <summary>
+        /// 工程終了条件を更新します。
+        /// </summary>
+        /// <param name="condition">更新する終了条件。</param>
+        Task UpdateProcessFinishConditionAsync(ProcessFinishCondition condition);
 
         /// <summary>
         /// 工程終了条件を削除します。
