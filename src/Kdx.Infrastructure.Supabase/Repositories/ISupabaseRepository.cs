@@ -962,8 +962,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <summary>
         /// 工程開始条件を削除します。
         /// </summary>
-        /// <param name="id">削除する工程開始条件ID。</param>
-        Task DeleteProcessStartConditionAsync(int id);
+        /// <param name="processId">工程ID。</param>
+        /// <param name="startProcessDetailId">開始条件となる工程詳細ID。</param>
+        Task DeleteProcessStartConditionAsync(int processId, int startProcessDetailId);
 
         /// <summary>
         /// 指定された工程IDの全ての開始条件を削除します。
@@ -1004,8 +1005,9 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <summary>
         /// 工程終了条件を削除します。
         /// </summary>
-        /// <param name="id">削除する工程終了条件ID。</param>
-        Task DeleteProcessFinishConditionAsync(int id);
+        /// <param name="processId">工程ID。</param>
+        /// <param name="finishProcessDetailId">終了条件となる工程詳細ID。</param>
+        Task DeleteProcessFinishConditionAsync(int processId, int finishProcessDetailId);
 
         /// <summary>
         /// 指定された工程IDの全ての終了条件を削除します。

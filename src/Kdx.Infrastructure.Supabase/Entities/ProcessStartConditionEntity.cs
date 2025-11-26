@@ -7,37 +7,33 @@ namespace Kdx.Infrastructure.Supabase.Entities
     [Table("ProcessStartCondition")]
     internal class ProcessStartConditionEntity : BaseModel
     {
-        [PrimaryKey("Id")]
-        [Column("Id")]
-        public int Id { get; set; }
-
-        [Column("CycleId")]
-        public int? CycleId { get; set; }
-
+        [PrimaryKey("ProcessId")]
         [Column("ProcessId")]
         public int ProcessId { get; set; }
 
+        [PrimaryKey("StartProcessDetailId")]
         [Column("StartProcessDetailId")]
         public int StartProcessDetailId { get; set; }
+
+        [Column("CycleId")]
+        public int? CycleId { get; set; }
 
         [Column("StartSensor")]
         public string? StartSensor { get; set; }
 
         public static ProcessStartConditionEntity FromDto(ProcessStartCondition dto) => new()
         {
-            Id = dto.Id,
-            CycleId = dto.CycleId,
             ProcessId = dto.ProcessId,
             StartProcessDetailId = dto.StartProcessDetailId,
+            CycleId = dto.CycleId,
             StartSensor = dto.StartSensor
         };
 
         public ProcessStartCondition ToDto() => new()
         {
-            Id = this.Id,
-            CycleId = this.CycleId,
             ProcessId = this.ProcessId,
             StartProcessDetailId = this.StartProcessDetailId,
+            CycleId = this.CycleId,
             StartSensor = this.StartSensor
         };
     }

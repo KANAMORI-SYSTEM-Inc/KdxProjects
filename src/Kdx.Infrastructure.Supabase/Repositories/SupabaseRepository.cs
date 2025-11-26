@@ -1232,11 +1232,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 .Update(ProcessStartConditionEntity.FromDto(condition));
         }
 
-        public async Task DeleteProcessStartConditionAsync(int id)
+        public async Task DeleteProcessStartConditionAsync(int processId, int startProcessDetailId)
         {
             await _supabaseClient
                 .From<ProcessStartConditionEntity>()
-                .Where(p => p.Id == id)
+                .Where(p => p.ProcessId == processId)
+                .Where(p => p.StartProcessDetailId == startProcessDetailId)
                 .Delete();
         }
 
@@ -1305,11 +1306,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 .Update(ProcessFinishConditionEntity.FromDto(condition));
         }
 
-        public async Task DeleteProcessFinishConditionAsync(int id)
+        public async Task DeleteProcessFinishConditionAsync(int processId, int finishProcessDetailId)
         {
             await _supabaseClient
                 .From<ProcessFinishConditionEntity>()
-                .Where(p => p.Id == id)
+                .Where(p => p.ProcessId == processId)
+                .Where(p => p.FinishProcessDetailId == finishProcessDetailId)
                 .Delete();
         }
 
