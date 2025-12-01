@@ -1722,6 +1722,15 @@ namespace Kdx.Infrastructure.Supabase.Repositories
                 .Upsert(entities);
         }
 
+        public async Task DeleteMemoriesByPlcIdAsync(int plcId)
+        {
+            // 指定されたPLC IDに紐づくMemoryテーブルの全レコードを削除
+            await _supabaseClient
+                .From<MemoryEntity>()
+                .Where(m => m.PlcId == plcId)
+                .Delete();
+        }
+
         #endregion
 
         #region Definitions Methods

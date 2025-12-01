@@ -1271,6 +1271,12 @@ namespace Kdx.Infrastructure.Supabase.Repositories
         /// <param name="memories">保存または更新するメモリ情報のリスト。</param>
         Task SaveOrUpdateMemoriesBatchAsync(List<Memory> memories);
 
+        /// <summary>
+        /// 指定されたPLC IDに紐づく全てのメモリ情報を削除します。
+        /// </summary>
+        /// <param name="plcId">PLC ID。</param>
+        Task DeleteMemoriesByPlcIdAsync(int plcId);
+
         #endregion
 
         #region Definitions
