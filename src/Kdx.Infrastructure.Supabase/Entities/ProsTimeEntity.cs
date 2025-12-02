@@ -34,6 +34,9 @@ namespace Kdx.Infrastructure.Supabase.Entities
         [Column("CategoryId")]
         public int CategoryId { get; set; }
 
+        [Column("OutcoilNumber")]
+        public int OutcoilNumber { get; set; }
+
         public static ProsTimeEntity FromDto(ProsTime dto) => new()
         {
             PlcId = dto.PlcId,
@@ -43,7 +46,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
             CurrentDevice = dto.CurrentDevice,
             PreviousDevice = dto.PreviousDevice,
             CylinderDevice = dto.CylinderDevice,
-            CategoryId = dto.CategoryId
+            CategoryId = dto.CategoryId,
+            OutcoilNumber = dto.OutcoilNumber
         };
 
         public ProsTime ToDto() => new()
@@ -55,7 +59,8 @@ namespace Kdx.Infrastructure.Supabase.Entities
             CurrentDevice = this.CurrentDevice,
             PreviousDevice = this.PreviousDevice,
             CylinderDevice = this.CylinderDevice,
-            CategoryId = this.CategoryId
+            CategoryId = this.CategoryId,
+            OutcoilNumber = this.OutcoilNumber
         };
     }
 }

@@ -10,5 +10,6 @@ namespace Kdx.Contracts.DTOs
         public string PreviousDevice { get; set; } = "ZR0";
         public string CylinderDevice { get; set; } = "ZR0";
         public int CategoryId { get; set; } // OperationDefinitionsのID
+        public int OutcoilNumber { get; set; } // OperationDefinitionsIdを格納
     }
 }
