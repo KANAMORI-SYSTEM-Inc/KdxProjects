@@ -1,5 +1,4 @@
 using Kdx.Contracts.DTOs;
-using Kdx.Contracts.Interfaces;
 using Kdx.Core.Application;
 using Kdx.Infrastructure.Supabase.Repositories;
 

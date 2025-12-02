@@ -72,7 +72,7 @@ namespace Kdx.Infrastructure.Services
                 foreach (var group in groupedData)
                 {
                     var operationCategoryKey = group.Key;
-                    var totalCount = group.First().TotalCount;
+                    var totalCount = group.Count();
 
                     var map = new Dictionary<int, int>();
                     foreach (var item in group)
@@ -133,7 +133,7 @@ namespace Kdx.Infrastructure.Services
                     g => g.ToDictionary(pt => pt.SortId, pt => pt)
                 );
 
-            var definitions = Task.Run(async () => await _repository.GetDefinitionsAsync("Operation")).GetAwaiter().GetResult();
+            var prosTimeDifinitions = Task.Run(async () => await _repository.GetProsTimeDefinitionsAsync()).GetAwaiter().GetResult();
             var cylinders = Task.Run(async () => await _repository.GetCYsAsync()).GetAwaiter().GetResult().Where(c => c.PlcId == plcId).ToList();
 
             var prosTimesToSave = new List<ProsTime>();
@@ -155,37 +155,35 @@ namespace Kdx.Infrastructure.Services
 
                 int prosTimeCount = currentConfig.TotalProsTimeCount;
 
-                for (int i = 0; i < prosTimeCount; i++)
+                // 指定されたOperationのCategoryIdに対応するProsTimeDefinitionsを取得
+                // ProsTimeDefinitionsにはカテゴリごとに設定が含まれている
+                var prosTimeDefinitionByCategory = prosTimeDifinitions
+                    .Where(d => d.OperationCategoryId == operationCategoryValue)
+                    .OrderBy(d => d.SortOrder)
+                    .ToList();
+
+                foreach (ProsTimeDefinitions definition in prosTimeDefinitionByCategory)
                 {
                     string currentDevice = "ZR" + (startCurrent + count).ToString();
                     string previousDevice = "ZR" + (startPrevious + count).ToString();
                     string cylinderDevice = "ZR" + (startCylinder + count).ToString();
 
-                    ProsTime? existing = null;
-                    if (existingProsTimeMap.TryGetValue(operation.Id, out var opGroup) &&
-                        opGroup.TryGetValue(i, out var foundProsTime))
-                    {
-                        existing = foundProsTime;
-                    }
-
-                    count++;
                     ProsTime prosTime = new ProsTime
                     {
                         PlcId = plcId,
                         MnemonicId = (int)MnemonicType.Operation,
                         RecordId = operation.Id,
-                        SortId = i,
+                        SortId = definition.SortOrder,
                         CurrentDevice = currentDevice,
                         PreviousDevice = previousDevice,
                         CylinderDevice = cylinderDevice,
-                        CategoryId = currentConfig.SortIdToCategoryIdMap.TryGetValue(i, out var catId) ? catId : 0
+                        CategoryId = operation.CategoryId ?? 0
                     };
 
-                    var definition = definitions.FirstOrDefault(d => d.OutCoilNumber == operation.Id);
                     var cylinder = cylinders.FirstOrDefault(c => c.Id == operation.CYId);
                     string row2 = cylinder != null ? cylinder.CYNum ?? "NaN" : "NaN";
-                    string row3 = definition != null ? definition.Comment1 ?? "" : "";
-                    string row4 = definition != null ? definition.Comment2 ?? "" : "";
+                    string row3 = definition.Comment1 ?? "";
+                    string row4 = definition.Comment2 ?? "";
 
                     Memory currentMemory = new()
                     {
@@ -257,6 +255,9 @@ namespace Kdx.Infrastructure.Services
                     previousMemories.Add(previousMemory);
                     cylinderMemories.Add(cylinderMemory);
                     prosTimesToSave.Add(prosTime);
+
+                    count++;
+
                 }
             }
 
